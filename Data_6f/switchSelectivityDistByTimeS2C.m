@@ -20,6 +20,8 @@ for nData      = 2
     figure('Visible', 'on');
     groupNames      = {'Non.', 'Homo.', 'Dynamical'};
     pie(sizeGroup)
+    disp(sizeGroup/sum(sizeGroup))
+    disp(sum(sizeGroup))
     colormap(cmap)
     set(gca, 'TickDir', 'out')
     setPrint(8, 6, [PlotDir 'SingleUnitsTscore/SingleUnitsTscoreTime_' DataSetList(nData).name])
