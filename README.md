@@ -62,6 +62,11 @@
     * LDA -- trial type
     * LDA -- behavioral epochs
 
+### Model analyses (in Folder *MiscModelAnalysis*)
+#### Ephys subsample
+#### Ephys mixed units
+#### Peakiness model
+
 ## Future analyses
 ### Single neuron analyses
 * Activity distribution across trial periods (pre-sample, sample, delay, response)
