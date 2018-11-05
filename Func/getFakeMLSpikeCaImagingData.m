@@ -15,7 +15,7 @@
 
 
 
-function DataSetOOPSI = getFakeSpikeSingleTrialOOPSIData(spikeDataSet)
+function DataSetOOPSI = getFakeMLSpikeCaImagingData(spikeDataSet, fr)
 
     DataSetOOPSI           = repmat(struct('sessionIndex',1, 'nUnit', 1, ...
                                 'unit_yes_trial', 1, 'unit_no_trial', 1),length(spikeDataSet), 1);
@@ -31,15 +31,20 @@ function DataSetOOPSI = getFakeSpikeSingleTrialOOPSIData(spikeDataSet)
         DataSetOOPSI(nData).unit_yes_trial_index = spikeDataSet(nData).unit_yes_trial_index;
         DataSetOOPSI(nData).unit_no_trial_index  = spikeDataSet(nData).unit_no_trial_index;
         caData                                   = [spikeDataSet(nData).unit_yes_trial; spikeDataSet(nData).unit_no_trial];
-        caData                                   = caData';
-        fastData                                 = imagingToSpike(caData(:)');
+        spk                                      = mlspike(caData, fr);
 
         numYesTrial                              = length(spikeDataSet(nData).unit_yes_trial_index);
         numNoTrial                               = length(spikeDataSet(nData).unit_no_trial_index);
         numT                                     = size(spikeDataSet(nData).unit_yes_trial, 2);
+        t_frame                                  = (0:numT)/fr;
+        spks                                     = spk.spk;
+        fastData                                 = zeros(numYesTrial+numNoTrial, numT);
+        for ntrial                               = 1:length(spks)
+            if ~isempty(spks{ntrial})
+                fastData(ntrial, :)              = histcounts(spks{ntrial}, t_frame);
+            end
+        end
 
-        fastData                                 = reshape(fastData, numT, numYesTrial + numNoTrial);
-
-        DataSetOOPSI(nData).unit_yes_trial       = fastData(:, 1:numYesTrial)';
-        DataSetOOPSI(nData).unit_no_trial        = fastData(:, 1+numYesTrial:end)';
+        DataSetOOPSI(nData).unit_yes_trial       = fastData(1:numYesTrial, :);
+        DataSetOOPSI(nData).unit_no_trial        = fastData(1+numYesTrial:end, :);
     end
