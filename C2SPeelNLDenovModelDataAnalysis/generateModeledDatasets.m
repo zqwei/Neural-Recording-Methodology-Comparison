@@ -31,7 +31,7 @@ params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
 params.expression      = 'Transgentic';
 
 load([TempDatDir DataSetList(3).name '.mat'])
-nDataSet               = getFakeSpikePeelLinearData(nDataSet, params.frameRate);  
+nDataSet               = getFakeSpikePeelNLData(nDataSet, params.frameRate);  
 nonActiveNeuronIndex   = findNonActiveNeurons(nDataSet, params);
 nData                  = 1;
 DataSetList(nData).name    = 'ModelSpikeRandom_Deconv_Ca_Slow_Short_Delay';

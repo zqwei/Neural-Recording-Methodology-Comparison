@@ -31,17 +31,10 @@ params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
 params.expression      = 'Transgentic';
 
 load([TempDatDir DataSetList(3).name '.mat'])
-truncatedNormal        = truncate(makedist('Normal'), -1.5, 1.5);
-std_r                  = 0.0375; % 0; %0.0375;
-median_r               = 0.0927;
-std_d                  = 0.5374; % 0; %0.5374;
-median_d               = 1.2294;
-tau_r                  = random(truncatedNormal, length(nDataSet), 1) *  std_r + median_r;
-tau_d                  = random(truncatedNormal, length(nDataSet), 1) *  std_d + median_d;
-nDataSet               = getFakeSpikeDeconvData(nDataSet, tau_r, tau_d, params);  
+nDataSet               = getFakeMLSpikeCaImagingData(nDataSet, params.frameRate);  
 nonActiveNeuronIndex   = findNonActiveNeurons(nDataSet, params);
 nData                  = 1;
-DataSetList(nData).name    = 'ModelSpikeRandom_Deconv_Ca_Slow_Short_Delay';
+DataSetList(nData).name    = 'ModelSpikeMLSpike_Ca_Slow_Short_Delay';
 DataSetList(nData).params  = params; 
 DataSetList(nData).ActiveNeuronIndex = ~nonActiveNeuronIndex;
 save([TempDatDir DataSetList(nData).name '.mat'], 'nDataSet');
@@ -77,10 +70,6 @@ save([TempDatDir DataSetList(nData).name '.mat'], 'nDataSet');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 save([TempDatDir 'DataListC2SRandomDeconvModel.mat'], 'DataSetList');
-
-
-
-
 
 addpath('../Func');
 setDir;
