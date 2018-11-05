@@ -27,20 +27,27 @@ function DataSetOOPSI = getFakeSpikeOOPSIData(spikeDataSet)
         DataSetOOPSI(nData).ML_in_um         = spikeDataSet(nData).ML_in_um;
         DataSetOOPSI(nData).cell_type        = spikeDataSet(nData).cell_type;
         
-        %% unit_yes_trial
+        % unit_yes_trial
         DataSetOOPSI(nData).unit_yes_trial_index = spikeDataSet(nData).unit_yes_trial_index;
-        fastData                                 = imagingToSpike(spikeDataSet(nData).unit_yes_trial);
-        DataSetOOPSI(nData).unit_yes_trial       = fastData;
-        %% unit_no_trial
+        act_mat                                  = spikeDataSet(nData).unit_yes_trial;
+        act_mat                                  = bsxfun(@minus, act_mat, min(act_mat, [], 2));
+        DataSetOOPSI(nData).unit_yes_trial       = imagingToSpike(act_mat);
+        
+        % unit_no_trial
         DataSetOOPSI(nData).unit_no_trial_index  = spikeDataSet(nData).unit_no_trial_index;
-        fastData                                 = imagingToSpike(spikeDataSet(nData).unit_no_trial);
-        DataSetOOPSI(nData).unit_no_trial        = fastData;
-        %% unit_yes_error
+        act_mat                                  = imagingToSpike(spikeDataSet(nData).unit_no_trial);
+        act_mat                                  = bsxfun(@minus, act_mat, min(act_mat, [], 2));
+        DataSetOOPSI(nData).unit_no_trial        = imagingToSpike(act_mat);
+        
+        % unit_yes_error
         DataSetOOPSI(nData).unit_yes_error_index = spikeDataSet(nData).unit_yes_error_index;
-        fastData                                 = imagingToSpike(spikeDataSet(nData).unit_yes_error);
-        DataSetOOPSI(nData).unit_yes_error       = fastData;
-        %% unit_no_trial
+        act_mat                                  = imagingToSpike(spikeDataSet(nData).unit_yes_error);
+        act_mat                                  = bsxfun(@minus, act_mat, min(act_mat, [], 2));        
+        DataSetOOPSI(nData).unit_yes_error       = imagingToSpike(act_mat);
+        
+        % unit_no_trial
         DataSetOOPSI(nData).unit_no_error_index  = spikeDataSet(nData).unit_no_error_index;
-        fastData                                 = imagingToSpike(spikeDataSet(nData).unit_no_error);
-        DataSetOOPSI(nData).unit_no_error        = fastData;
+        act_mat                                  = spikeDataSet(nData).unit_no_error;
+        act_mat                                  = bsxfun(@minus, act_mat, min(act_mat, [], 2));
+        DataSetOOPSI(nData).unit_no_error        = imagingToSpike(act_mat);
     end

@@ -45,6 +45,7 @@ function DataSetOOPSI = getFakeSpikeNLDeconvData(spikeDataSet, tau_r, tau_d, nlP
         %% unit_yes_trial
         DataSetOOPSI(nData).unit_yes_trial_index = spikeDataSet(nData).unit_yes_trial_index;
         fastData                                 = mean(spikeDataSet(nData).unit_yes_trial);
+        fastData                                 = bsxfun(@minus, fastData, min(fastData, [], 2));
         fastData(fastData > paramInv(1) + paramInv(2)*(1-per_cent)) = paramInv(1) + paramInv(2)*(1-per_cent); 
         fastData(fastData < paramInv(1) + paramInv(2)*per_cent)     = paramInv(1) + paramInv(2)*per_cent; 
         fastData                                                    = inv_g(paramInv, fastData);
@@ -53,6 +54,7 @@ function DataSetOOPSI = getFakeSpikeNLDeconvData(spikeDataSet, tau_r, tau_d, nlP
         %% unit_no_trial
         DataSetOOPSI(nData).unit_no_trial_index  = spikeDataSet(nData).unit_no_trial_index;
         fastData                                 = mean(spikeDataSet(nData).unit_no_trial);
+        fastData                                 = bsxfun(@minus, fastData, min(fastData, [], 2));
         fastData(fastData > paramInv(1) + paramInv(2)*(1-per_cent)) = paramInv(1) + paramInv(2)*(1-per_cent); 
         fastData(fastData < paramInv(1) + paramInv(2)*per_cent)     = paramInv(1) + paramInv(2)*per_cent; 
         fastData                                                    = inv_g(paramInv, fastData);
