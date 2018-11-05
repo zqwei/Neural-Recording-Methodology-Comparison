@@ -15,7 +15,7 @@
 
 
 
-function DataSetOOPSI = getFakeSpikeSingleTrialOOPSIData(spikeDataSet)
+function DataSetOOPSI = getFakeSpikePeelNLData(spikeDataSet, fr)
 
     DataSetOOPSI           = repmat(struct('sessionIndex',1, 'nUnit', 1, ...
                                 'unit_yes_trial', 1, 'unit_no_trial', 1),length(spikeDataSet), 1);
@@ -31,14 +31,18 @@ function DataSetOOPSI = getFakeSpikeSingleTrialOOPSIData(spikeDataSet)
         DataSetOOPSI(nData).unit_yes_trial_index = spikeDataSet(nData).unit_yes_trial_index;
         DataSetOOPSI(nData).unit_no_trial_index  = spikeDataSet(nData).unit_no_trial_index;
         caData                                   = [spikeDataSet(nData).unit_yes_trial; spikeDataSet(nData).unit_no_trial];
+        caData                                   = bsxfun(@minus, caData, min(caData, [], 2));
         caData                                   = caData';
-        fastData                                 = imagingToSpike(caData(:)');
-
+        [ca_p, peel_p, data]                     = peel_nl_oopsi(caData(:)', fr);
+        
+        DataSetOOPSI(nData).ca_p                 = ca_p;
+        DataSetOOPSI(nData).peel_p               = peel_p;
+        DataSetOOPSI(nData).data                 = data;
         numYesTrial                              = length(spikeDataSet(nData).unit_yes_trial_index);
         numNoTrial                               = length(spikeDataSet(nData).unit_no_trial_index);
         numT                                     = size(spikeDataSet(nData).unit_yes_trial, 2);
 
-        fastData                                 = reshape(fastData, numT, numYesTrial + numNoTrial);
+        fastData                                 = reshape(data.spiketrain, numT, numYesTrial + numNoTrial);
 
         DataSetOOPSI(nData).unit_yes_trial       = fastData(:, 1:numYesTrial)';
         DataSetOOPSI(nData).unit_no_trial        = fastData(:, 1+numYesTrial:end)';
