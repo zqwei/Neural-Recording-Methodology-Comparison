@@ -9,12 +9,13 @@
 % -------------------------------------------------------------------------
 % Ziqiang Wei
 % weiz@janelia.hhmi.org
-% 
+%
 
 warning('off', 'all')
 addpath('../Func/plotFuncs')
 addpath('../Func/utilFuncs')
 addpath('../Func/oopsi')
+addpath('../Func/MLspike/')
 % set(0, 'defaultfigureVisible','off')
 set(0, 'defaultaxesTickDir', 'out')
 set(0, 'defaultaxesLineWidth', 1.0)
