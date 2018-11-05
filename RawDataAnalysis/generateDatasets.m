@@ -241,6 +241,50 @@ DataSetList(10).params  = params;
 DataSetList(10).ActiveNeuronIndex = ~nonActiveNeuronIndex;
 save([TempDatDir DataSetList(10).name '.mat'], 'nDataSet');
 
+
+minNumTrialToAnalysis  = 20;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Spike short delay S1 #11
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% params.frameRate       =  29.68/2;
+% params.binsize         =  1/params.frameRate;
+% params.polein          =  -2.6;
+% params.poleout         =  -1.3;
+% minTimeToAnalysis      =  round(-3.1 * params.frameRate);
+% maxTimeToAnalysis      =  round(2.0 * params.frameRate);
+% params.timeWindowIndexRange  = minTimeToAnalysis : maxTimeToAnalysis;
+% params.timeSeries      = params.timeWindowIndexRange * params.binsize;
+% params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
+% params.expression      = 'None';
+% minFiringRate          = 5; % Hz per epoch
+% nDataSet               = getHiIntraSpikeDataWithEphysTime(SpikingShortHiIntraDir, SpikingShortHiIntraFileList, params.timeSeries, params.binsize);
+% DataSetList(9).name    = 'Shuffle_Spikes_Hi_intra_Short_Delay';
+% DataSetList(9).params  = params; 
+% DataSetList(9).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
+% save([TempDatDir DataSetList(9).name '_old.mat'], 'nDataSet');
+
+
+minNumTrialToAnalysis  = 20;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Spike short delay imaging S1 #12
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% params.frameRate       =  29.68/2;
+% params.binsize         =  1/params.frameRate;
+% params.polein          =  -2.6;
+% params.poleout         =  -1.3;
+% minTimeToAnalysis      =  round(-3.1 * params.frameRate);
+% maxTimeToAnalysis      =  round(2.0 * params.frameRate);
+% params.timeWindowIndexRange  = minTimeToAnalysis : maxTimeToAnalysis;
+% params.timeSeries      = params.timeWindowIndexRange * params.binsize;
+% params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
+% params.expression      = 'None';
+% minFiringRate          = 5; % Hz per epoch
+% nDataSet               = getHiIntraSpikeDataWithEphysTime(SpikingShortHiIntraDir, SpikingShortHiIntraFileList, params.timeSeries, params.binsize);
+% DataSetList(9).name    = 'Shuffle_Spikes_Hi_intra_Short_Delay';
+% DataSetList(9).params  = params; 
+% DataSetList(9).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
+% save([TempDatDir DataSetList(9).name '_old.mat'], 'nDataSet');
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 fileList            = {SpikingShortNuoFileList; ...
