@@ -31,6 +31,7 @@ function DataSetOOPSI = getFakeSpikeSingleTrialOOPSIData(spikeDataSet)
         DataSetOOPSI(nData).unit_yes_trial_index = spikeDataSet(nData).unit_yes_trial_index;
         DataSetOOPSI(nData).unit_no_trial_index  = spikeDataSet(nData).unit_no_trial_index;
         caData                                   = [spikeDataSet(nData).unit_yes_trial; spikeDataSet(nData).unit_no_trial];
+        caData                                   = bsxfun(@minus, caData, min(caData, [], 2));
         caData                                   = caData';
         fastData                                 = imagingToSpike(caData(:)');
         
