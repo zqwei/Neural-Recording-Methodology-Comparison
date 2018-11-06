@@ -27,13 +27,36 @@ for nCell = 3:4
     nDataSet(nCell).mcmc_no_trial  = fastData(:, 1+numYesTrial:end)'/binsize;
     
     
+    fr               = 1/binsize;
+    spk              = mlspike(nUnitData, fr);
+    t_frame                           = (0:numT)/fr;
+    spks                              = spk.spk;
+    fastData                          = zeros(numYesTrial+numNoTrial, numT);
+    for ntrial                        = 1:length(spks)
+        if ~isempty(spks{ntrial})
+            fastData(ntrial, :)       = histcounts(spks{ntrial}, t_frame);
+        end
+    end
+
+    nDataSet(nCell).mlspike_yes_trial = fastData(1:numYesTrial, :);
+    nDataSet(nCell).mlspike_no_trial  = fastData(1+numYesTrial:end, :);
     
+    [~, ~, data]     = peel_oopsi(nUnitData_(:)', fr);
+    fastData         = reshape(data.spiketrain, numT, numYesTrial + numNoTrial);
     
+    nDataSet(nCell).peel_yes_trial = fastData(:, 1:numYesTrial)'/binsize;    
+    nDataSet(nCell).peel_no_trial  = fastData(:, 1+numYesTrial:end)'/binsize;
     
+    [~, ~, data]     = peel_nl_oopsi(nUnitData_(:)', fr);
+    fastData         = reshape(data.spiketrain, numT, numYesTrial + numNoTrial);
     
+    nDataSet(nCell).peelnl_yes_trial = fastData(:, 1:numYesTrial)'/binsize;    
+    nDataSet(nCell).peelnl_no_trial  = fastData(:, 1+numYesTrial:end)'/binsize;
+    
+    save(['S2CC2S_' DataSetList(nData).name '.mat'], 'nDataSet');
 end
 
-save(['S2CC2SMCMCSingleTrial_' DataSetList(nData).name '.mat'], 'nDataSet');
+
 
 
 
@@ -47,14 +70,41 @@ for nCell = 1:length(nDataSet)
     
     nUnitData        = [nDataSet(nCell).unit_yes_trial; nDataSet(nCell).unit_no_trial];
     nUnitData        = bsxfun(@minus, nUnitData, min(nUnitData, [], 2));
-    nUnitData        = nUnitData';
+    nUnitData_       = nUnitData';
     
-    fastData         = imagingToSpike(nUnitData(:)');
+    fastData         = imagingToSpike(nUnitData_(:)');
     fastData         = reshape(fastData, numT, numYesTrial + numNoTrial);
     
     nDataSet(nCell).mcmc_yes_trial = fastData(:, 1:numYesTrial)'/binsize;    
     nDataSet(nCell).mcmc_no_trial  = fastData(:, 1+numYesTrial:end)'/binsize;
     
+    
+    fr               = 1/binsize;
+    spk              = mlspike(nUnitData, fr);
+    t_frame                           = (0:numT)/fr;
+    spks                              = spk.spk;
+    fastData                          = zeros(numYesTrial+numNoTrial, numT);
+    for ntrial                        = 1:length(spks)
+        if ~isempty(spks{ntrial})
+            fastData(ntrial, :)       = histcounts(spks{ntrial}, t_frame);
+        end
+    end
+
+    nDataSet(nCell).mlspike_yes_trial = fastData(1:numYesTrial, :);
+    nDataSet(nCell).mlspike_no_trial  = fastData(1+numYesTrial:end, :);
+    
+    [~, ~, data]     = peel_oopsi(nUnitData_(:)', fr);
+    fastData         = reshape(data.spiketrain, numT, numYesTrial + numNoTrial);
+    
+    nDataSet(nCell).peel_yes_trial = fastData(:, 1:numYesTrial)'/binsize;    
+    nDataSet(nCell).peel_no_trial  = fastData(:, 1+numYesTrial:end)'/binsize;
+    
+    [~, ~, data]     = peel_nl_oopsi(nUnitData_(:)', fr);
+    fastData         = reshape(data.spiketrain, numT, numYesTrial + numNoTrial);
+    
+    nDataSet(nCell).peelnl_yes_trial = fastData(:, 1:numYesTrial)'/binsize;    
+    nDataSet(nCell).peelnl_no_trial  = fastData(:, 1+numYesTrial:end)'/binsize;
+    
 end
 
-save(['S2CC2SMCMCSingleTrial_' fName '_.mat'], 'nDataSet');
+save(['S2CC2S_' fName '_.mat'], 'nDataSet');
