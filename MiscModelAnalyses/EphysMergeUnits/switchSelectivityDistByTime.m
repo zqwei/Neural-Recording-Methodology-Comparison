@@ -72,3 +72,5 @@ for nplot = 1:3
     ylabel('Frac. cell type');
     title(titles{nplot});
 end
+
+setPrint(8*3, 6, 'EphysMergeUnits', 'pdf')
