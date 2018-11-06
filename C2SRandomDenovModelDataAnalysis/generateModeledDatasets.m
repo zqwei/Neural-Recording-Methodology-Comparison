@@ -1,7 +1,7 @@
-% 
+%
 % Comparison based on single unit acitivity
 % Generating Ca++ imaging data from ephys data using Tsai-Wen's model
-% 
+%
 % -------------------------------------------------------------------------
 % version 1.0
 %
@@ -30,7 +30,7 @@ params.timeSeries      = params.timeWindowIndexRange * params.binsize;
 params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
 params.expression      = 'Transgentic';
 
-load([TempDatDir DataSetList(3).name '.mat'])
+load([TempDatDir DataSetList(3).name '_withOLRemoval.mat'])
 truncatedNormal        = truncate(makedist('Normal'), -1.5, 1.5);
 std_r                  = 0.0375; % 0; %0.0375;
 median_r               = 0.0927;
@@ -38,11 +38,11 @@ std_d                  = 0.5374; % 0; %0.5374;
 median_d               = 1.2294;
 tau_r                  = random(truncatedNormal, length(nDataSet), 1) *  std_r + median_r;
 tau_d                  = random(truncatedNormal, length(nDataSet), 1) *  std_d + median_d;
-nDataSet               = getFakeSpikeDeconvData(nDataSet, tau_r, tau_d, params);  
+nDataSet               = getFakeSpikeDeconvData(nDataSet, tau_r, tau_d, params);
 nonActiveNeuronIndex   = findNonActiveNeurons(nDataSet, params);
 nData                  = 1;
 DataSetList(nData).name    = 'ModelSpikeRandom_Deconv_Ca_Slow_Short_Delay';
-DataSetList(nData).params  = params; 
+DataSetList(nData).params  = params;
 DataSetList(nData).ActiveNeuronIndex = ~nonActiveNeuronIndex;
 save([TempDatDir DataSetList(nData).name '.mat'], 'nDataSet');
 
@@ -59,18 +59,18 @@ params.timeWindowIndexRange  = minTimeToAnalysis : maxTimeToAnalysis;
 params.timeSeries      = params.timeWindowIndexRange * params.binsize;
 params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
 params.expression      = 'Virus';
-load([TempDatDir DataSetList(4).name '.mat'])
+load([TempDatDir DataSetList(4).name '_withOLRemoval.mat'])
 std_r                  = 0.0246; % 0; %0.0246;
 median_r               = 0.0505;
 std_d                  = 0.4588; % 0; %0.4588;
 median_d               = 1.7064;
 tau_r                  = random(truncatedNormal, length(nDataSet), 1) *  std_r + median_r;
 tau_d                  = random(truncatedNormal, length(nDataSet), 1) *  std_d + median_d;
-nDataSet               = getFakeSpikeDeconvData(nDataSet, tau_r, tau_d, params);  
+nDataSet               = getFakeSpikeDeconvData(nDataSet, tau_r, tau_d, params);
 nonActiveNeuronIndex   = findNonActiveNeurons(nDataSet, params);
 nData                  = 2;
 DataSetList(nData).name    = 'ModelSpikeRandom_Deconv_Ca_Slow_Short_Delay_Virus';
-DataSetList(nData).params  = params; 
+DataSetList(nData).params  = params;
 DataSetList(nData).ActiveNeuronIndex = ~nonActiveNeuronIndex;
 save([TempDatDir DataSetList(nData).name '.mat'], 'nDataSet');
 
@@ -88,7 +88,7 @@ load ([TempDatDir 'DataListC2SRandomDeconvModel.mat']);
 load([TempDatDir 'FineTuned6fNLParams.mat'], 'nlParams');
 minNumTrialToAnalysis  = 15;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% short Ca slow
+% short Ca fast
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 params.frameRate       =  30.0255/2;
 params.binsize         =  1/params.frameRate;
@@ -112,11 +112,11 @@ std_d                  = 0.5390;
 median_d               = 0.5898;
 tau_r                  = random(truncatedNormal, length(nDataSet), 1) *  std_r + median_r;
 tau_d                  = random(truncatedNormal, length(nDataSet), 1) *  std_d + median_d;
-nDataSet               = getFakeSpikeDeconvData(nDataSet, tau_r, tau_d, params);  
+nDataSet               = getFakeSpikeDeconvData(nDataSet, tau_r, tau_d, params);
 nonActiveNeuronIndex   = findNonActiveNeurons(nDataSet, params);
 nData                  = 3;
 DataSetList(nData).name    = 'ModelSpikeRandom_Deconv_Ca_Fast_SShort_Delay';
-DataSetList(nData).params  = params; 
+DataSetList(nData).params  = params;
 DataSetList(nData).ActiveNeuronIndex = ~nonActiveNeuronIndex;
 save([TempDatDir DataSetList(nData).name '.mat'], 'nDataSet');
 save([TempDatDir 'DataListC2SRandomDeconvModel.mat'], 'DataSetList');
