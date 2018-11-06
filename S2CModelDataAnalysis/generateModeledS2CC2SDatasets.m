@@ -10,20 +10,26 @@ binsize  = params.binsize;
 
 nData = 2;
 load([TempDatDir DataSetList(nData).name '.mat'])
-for nCell = 1:length(nDataSet)
+for nCell = 3:4
     
     numYesTrial      = size(nDataSet(nData).unit_yes_trial, 1);
     numNoTrial       = size(nDataSet(nData).unit_no_trial, 1);
     numT             = size(nDataSet(nData).unit_yes_trial, 2);
     
     nUnitData        = [nDataSet(nCell).unit_yes_trial; nDataSet(nCell).unit_no_trial];
-    nUnitData        = nUnitData';
+    nUnitData        = bsxfun(@minus, nUnitData, min(nUnitData, [], 2));
+    nUnitData_       = nUnitData';
     
-    fastData         = imagingToSpike(nUnitData(:)');
+    fastData         = imagingToSpike(nUnitData_(:)');
     fastData         = reshape(fastData, numT, numYesTrial + numNoTrial);
     
     nDataSet(nCell).mcmc_yes_trial = fastData(:, 1:numYesTrial)'/binsize;    
     nDataSet(nCell).mcmc_no_trial  = fastData(:, 1+numYesTrial:end)'/binsize;
+    
+    
+    
+    
+    
     
 end
 
@@ -40,6 +46,7 @@ for nCell = 1:length(nDataSet)
     numT             = size(nDataSet(nCell).unit_yes_trial, 2);
     
     nUnitData        = [nDataSet(nCell).unit_yes_trial; nDataSet(nCell).unit_no_trial];
+    nUnitData        = bsxfun(@minus, nUnitData, min(nUnitData, [], 2));
     nUnitData        = nUnitData';
     
     fastData         = imagingToSpike(nUnitData(:)');
