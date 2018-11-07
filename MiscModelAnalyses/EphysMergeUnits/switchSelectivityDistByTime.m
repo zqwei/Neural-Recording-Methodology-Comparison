@@ -68,9 +68,11 @@ for nplot = 1:3
     subplot(1, 3, nplot)
     boxplot(per_matrx(:, :, nplot)');
     set(gca, 'xticklabel', num2str(perc_mat'));
+    set(gca, 'tickdir', 'out');
     xlabel('Prob. merge')
     ylabel('Frac. cell type');
     title(titles{nplot});
+    box off
 end
 
 setPrint(8*3, 6, 'EphysMergeUnits', 'pdf')
