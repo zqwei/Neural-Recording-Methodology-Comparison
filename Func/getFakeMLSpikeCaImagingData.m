@@ -32,12 +32,16 @@ function DataSetOOPSI = getFakeMLSpikeCaImagingData(spikeDataSet, fr)
         DataSetOOPSI(nData).unit_no_trial_index  = spikeDataSet(nData).unit_no_trial_index;
         caData                                   = [spikeDataSet(nData).unit_yes_trial; spikeDataSet(nData).unit_no_trial];
         caData                                   = bsxfun(@minus, caData, min(caData, [], 2));
-        spk                                      = mlspike(caData, fr);
-
         numYesTrial                              = length(spikeDataSet(nData).unit_yes_trial_index);
         numNoTrial                               = length(spikeDataSet(nData).unit_no_trial_index);
         numT                                     = size(spikeDataSet(nData).unit_yes_trial, 2);
         t_frame                                  = (0:numT)/fr;
+        try
+            spk                                  = mlspike(caData, fr);
+        catch
+            spk.spk                              = cell(numYesTrial+numNoTrial, 1);
+        end
+
         DataSetOOPSI(nData).mlspk                = spk;
         spks                                     = spk.spk;
         fastData                                 = zeros(numYesTrial+numNoTrial, numT);

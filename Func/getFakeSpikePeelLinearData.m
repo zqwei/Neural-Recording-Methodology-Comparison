@@ -46,4 +46,5 @@ function DataSetOOPSI = getFakeSpikePeelLinearData(spikeDataSet, fr)
 
         DataSetOOPSI(nData).unit_yes_trial       = fastData(:, 1:numYesTrial)';
         DataSetOOPSI(nData).unit_no_trial        = fastData(:, 1+numYesTrial:end)';
+        disp(nData)
     end
