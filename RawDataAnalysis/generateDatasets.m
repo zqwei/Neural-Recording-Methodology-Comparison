@@ -242,48 +242,48 @@ DataSetList(10).ActiveNeuronIndex = ~nonActiveNeuronIndex;
 save([TempDatDir DataSetList(10).name '.mat'], 'nDataSet');
 
 
-minNumTrialToAnalysis  = 20;
+minNumTrialToAnalysis  = 15;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Spike short delay S1 #11
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% params.frameRate       =  29.68/2;
-% params.binsize         =  1/params.frameRate;
-% params.polein          =  -2.6;
-% params.poleout         =  -1.3;
-% minTimeToAnalysis      =  round(-3.1 * params.frameRate);
-% maxTimeToAnalysis      =  round(2.0 * params.frameRate);
-% params.timeWindowIndexRange  = minTimeToAnalysis : maxTimeToAnalysis;
-% params.timeSeries      = params.timeWindowIndexRange * params.binsize;
-% params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
-% params.expression      = 'None';
-% minFiringRate          = 5; % Hz per epoch
-% nDataSet               = getHiIntraSpikeDataWithEphysTime(SpikingShortHiIntraDir, SpikingShortHiIntraFileList, params.timeSeries, params.binsize);
-% DataSetList(9).name    = 'Shuffle_Spikes_Hi_intra_Short_Delay';
-% DataSetList(9).params  = params; 
-% DataSetList(9).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
-% save([TempDatDir DataSetList(9).name '_old.mat'], 'nDataSet');
+params.frameRate       =  7;
+params.binsize         =  1/params.frameRate;
+params.polein          =  -2.6;
+params.poleout         =  -1.3;
+minTimeToAnalysis      =  round(-3.1 * params.frameRate);
+maxTimeToAnalysis      =  round(2.0 * params.frameRate);
+params.timeWindowIndexRange  = minTimeToAnalysis : maxTimeToAnalysis;
+params.timeSeries      = params.timeWindowIndexRange * params.binsize;
+params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
+params.expression      = 'None';
+minFiringRate          = 5; % Hz per epoch
+nDataSet               = getSpikeDataWithEphysTime(SpikingS1NuoDir, SpikingS1NuoFileList, params.minNumTrialToAnalysis, params.timeSeries, params.binsize, []);
+DataSetList(11).name    = 'Shuffle_Spikes_Nuo_S1_Short_Delay';
+DataSetList(11).params  = params; 
+DataSetList(11).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
+save([TempDatDir DataSetList(11).name '.mat'], 'nDataSet');
 
 
-minNumTrialToAnalysis  = 20;
+minNumTrialToAnalysis  = 15;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Spike short delay imaging S1 #12
+% Spike short delay imaging S1 #12 6s-AAV
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% params.frameRate       =  29.68/2;
-% params.binsize         =  1/params.frameRate;
-% params.polein          =  -2.6;
-% params.poleout         =  -1.3;
-% minTimeToAnalysis      =  round(-3.1 * params.frameRate);
-% maxTimeToAnalysis      =  round(2.0 * params.frameRate);
-% params.timeWindowIndexRange  = minTimeToAnalysis : maxTimeToAnalysis;
-% params.timeSeries      = params.timeWindowIndexRange * params.binsize;
-% params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
-% params.expression      = 'None';
-% minFiringRate          = 5; % Hz per epoch
-% nDataSet               = getHiIntraSpikeDataWithEphysTime(SpikingShortHiIntraDir, SpikingShortHiIntraFileList, params.timeSeries, params.binsize);
-% DataSetList(9).name    = 'Shuffle_Spikes_Hi_intra_Short_Delay';
-% DataSetList(9).params  = params; 
-% DataSetList(9).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
-% save([TempDatDir DataSetList(9).name '_old.mat'], 'nDataSet');
+params.frameRate       =  7;
+params.binsize         =  1/params.frameRate;
+params.polein          =  -2.07;
+params.poleout         =  -1.05;
+minTimeToAnalysis      =  round(-2.6 * params.frameRate);
+maxTimeToAnalysis      =  round(2.0 * params.frameRate);
+params.timeWindowIndexRange  = minTimeToAnalysis : maxTimeToAnalysis;
+params.timeSeries      = params.timeWindowIndexRange * params.binsize;
+params.minNumTrialToAnalysis =  minNumTrialToAnalysis;
+params.expression      = 'Virus';
+nDataSet               = getCaImagingDataSP(CaImagingS1SlowVirusDir, CaImagingS1SlowVirusFileList, minNumTrialToAnalysis, params);
+nonActiveNeuronIndex   = findNonActiveNeurons(nDataSet, params);
+DataSetList(12).name    = 'Shuffle_Ca_SP_S1_Slow_Short_Delay_Virus';
+DataSetList(12).params  = params; 
+DataSetList(12).ActiveNeuronIndex = ~nonActiveNeuronIndex;
+save([TempDatDir DataSetList(12).name '.mat'], 'nDataSet');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -296,7 +296,9 @@ fileList            = {SpikingShortNuoFileList; ...
                        SpikingLongNuoFileList;...
                        SpikingShortHiFileList;...
                        SpikingShortHiIntraFileList;...
-                       CaImagingSShortDelayFastFileList};
+                       CaImagingSShortDelayFastFileList;...
+                       SpikingS1NuoFileList;...
+                       CaImagingS1SlowVirusFileList};
 
 for nData           = 1:length(fileList)
     if exist([TempDatDir DataSetList(nData).name '_old.mat'], 'file')

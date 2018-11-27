@@ -18,7 +18,7 @@ cmap = cbrewer('qual', 'Set1', 9, 'cubic');
 cmap = cmap([3, 5, 9], :);
 groupColors = {cmap(3, :), cmap(2, :), cmap(1, :)};
 
-for nData      = [1 3 4]%1:length(DataSetList)
+for nData      = [11 12]%[1 3 4]%1:length(DataSetList)
     if ~exist([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'], 'file')
         load([TempDatDir DataSetList(nData).name '.mat']);
         neuronRemoveList = false(length(nDataSet), 1);
@@ -29,16 +29,16 @@ for nData      = [1 3 4]%1:length(DataSetList)
     sizeGroup = histcounts(unitGroup, 0:3);
     disp(sizeGroup/sum(sizeGroup))
     disp(sum(sizeGroup))
-%     figure('Visible', 'off');
-%     groupNames      = {['Non' newline 'n = ' num2str(sum(unitGroup==0))], ... 
-%                        ['Mono' newline 'n = ' num2str(sum(unitGroup==1))], ...
-%                        ['Multi' newline 'n = ' num2str(sum(unitGroup==2))]};
-%     donut(sizeGroup, groupNames, groupColors);
-%     % pie(sizeGroup, groupNames)
-%     axis off
-%     legend('Location','eastoutside')
-%     legend('boxoff')
-%     setPrint(8, 6, [PlotDir 'SingleUnitsTscore/SingleUnitsTscoreTime_' DataSetList(nData).name])
+    figure('Visible', 'off');
+    groupNames      = {['Non' newline 'n = ' num2str(sum(unitGroup==0))], ... 
+                       ['Mono' newline 'n = ' num2str(sum(unitGroup==1))], ...
+                       ['Multi' newline 'n = ' num2str(sum(unitGroup==2))]};
+    donut(sizeGroup, groupNames, groupColors);
+    % pie(sizeGroup, groupNames)
+    axis off
+    legend('Location','eastoutside')
+    legend('boxoff')
+    setPrint(8, 6, [PlotDir 'SingleUnitsTscore/SingleUnitsTscoreTime_' DataSetList(nData).name], 'png')
 %     setPrint(8, 6, [PlotDir 'SingleUnitsTscore/' DataSetList(nData).name '_selectivity'], 'svg')
 % 
 %     depth                        = [DataSetList(nData).cellinfo(:).depth];

@@ -45,7 +45,11 @@ function SpikeDataSet = getSpikeDataWithEphysTime(SpikingDataDir, SpikeFileList,
                     
         numUnits     = length(neuron_single_units); %#ok<USENS>
         % numTrials    = length(behavior_report);
-        task_type    = task_trial_type =='y';
+        if ismember('y', unique(task_trial_type))
+            task_type    = task_trial_type =='y';
+        elseif ismember('r', unique(task_trial_type))
+            task_type    = task_trial_type =='r';
+        end
         
         usedUnitsNFile      = false(numUnits, 1);
         
@@ -55,6 +59,8 @@ function SpikeDataSet = getSpikeDataWithEphysTime(SpikingDataDir, SpikeFileList,
             n_valid_no      = valid_trials & ~n_missing_dat & ~task_type;
             sum_valid_yes   = sum(n_valid_yes);
             sum_valid_no    = sum(n_valid_no);
+            
+%             disp([sum_valid_yes, sum_valid_no])
 
             if sum_valid_yes> minNumTrialToAnalysis && sum_valid_no> minNumTrialToAnalysis
                 usedUnitsNFile(nUnit) = true;
@@ -148,7 +154,11 @@ function SpikeDataSet = getSpikeDataWithEphysTime(SpikingDataDir, SpikeFileList,
                 if ~isempty(cellType_all)
                     SpikeDataSet(tot_Unit).cell_type        = cellType_all(nUnit + nFileUnit, 1);
                 else
-                    SpikeDataSet(tot_Unit).cell_type        = neuron_unit_info{nUnit}.cell_type1;
+                    if isfield(neuron_unit_info{nUnit}, 'cell_type1')
+                        SpikeDataSet(tot_Unit).cell_type        = neuron_unit_info{nUnit}.cell_type1;
+                    elseif isfield(neuron_unit_info{nUnit}, 'cell_type')
+                        SpikeDataSet(tot_Unit).cell_type        = neuron_unit_info{nUnit}.cell_type;
+                    end
                 end
                 
             end

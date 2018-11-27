@@ -6,7 +6,7 @@ if ~exist([PlotDir 'SingleUnitsPeakLocation'],'dir')
     mkdir([PlotDir 'SingleUnitsPeakLocation'])
 end
 
-for nData     = [1 3 4 10]%1:length(DataSetList)
+for nData     = [11 12]%[1 3 4 10]%1:length(DataSetList)
     if ~exist([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'], 'file')
         load([TempDatDir DataSetList(nData).name '.mat'])
         neuronRemoveList = false(length(nDataSet), 1);
@@ -57,15 +57,16 @@ for nData     = [1 3 4 10]%1:length(DataSetList)
     bplot = bar(timeStep, countMaxId(1+numTimeBin:end), 1, 'facecolor', 'r', 'edgecolor', 'none');
     bplot.FaceAlpha = 0.5;
     xlim([timeStep(1) params.timeSeries(end)])
-    ylim([0 8])
-    gridxy ([polein, poleout, 0],[1/(numTimeBin-8)/2*100], 'Color','k','Linestyle','--','linewid', 1.0)
+%     ylim([0 8])
+    preBin = sum(DataSetList(nData).params.timeSeries<polein);
+    gridxy ([polein, poleout, 0],[1/(numTimeBin-preBin)/2*100], 'Color','k','Linestyle','--','linewid', 1.0)
     box off
     set(gca,'TickDir','out')
     ylabel('% Max peak')
     xlabel('Time')
     hold off
-    setPrint(8, 3, [PlotDir 'SingleUnitsPeakLocation\SingleUnitsMaxLocationPosNeuron_' DataSetList(nData).name])
-    setPrint(8, 3, [PlotDir 'SingleUnitsPeakLocation\' DataSetList(nData).name '_peakness'], 'svg')
+    setPrint(8, 3, [PlotDir 'SingleUnitsPeakLocation\SingleUnitsMaxLocationPosNeuron_' DataSetList(nData).name], 'png')
+%     setPrint(8, 3, [PlotDir 'SingleUnitsPeakLocation\' DataSetList(nData).name '_peakness'], 'svg')
 end
 
 close all
