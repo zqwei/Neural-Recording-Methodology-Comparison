@@ -138,7 +138,7 @@ function CaImagingDataSet    = getCaImagingDataSP(CaImagingDir, CaImagingFileLis
                     end
                     
                     tot_Unit    = tot_Unit + 1;
-                    CaImagingDataSet(tot_Unit).sessionIndex         = nfile;
+                    CaImagingDataSet(tot_Unit).sessionIndex         = nfile*100 + ndff;
                     CaImagingDataSet(tot_Unit).nUnit                = ids(nUnit);
                     CaImagingDataSet(tot_Unit).unit_yes_trial       = squeeze(unit_yes_TimeTrial(nUnit,:,yes_valid))';
                     CaImagingDataSet(tot_Unit).unit_yes_trial_index = intersect(trials_index,unit_yes_trial_index);
@@ -150,7 +150,19 @@ function CaImagingDataSet    = getCaImagingDataSP(CaImagingDir, CaImagingFileLis
                     CaImagingDataSet(tot_Unit).unit_no_error        = squeeze(error_no_TimeTrial(nUnit,:,:))';   
                     CaImagingDataSet(tot_Unit).unit_no_error_index  = intersect(trials_index,error_no_trial_index);
                     
-                    CaImagingDataSet(tot_Unit).depth_in_um          = nan;
+                    % 105 fov_09002 - fov_09004: 390 - 420
+                    % 201 fov_03002 - fov_03004: 120 - 150
+                    % 203 fov_08002 - fov_08004: 345 - 375
+                    % 301 fov_09002 - fov_09004: 390 - 420
+                    switch nfile*100 + ndff
+                        case 201
+                            depth = 135;
+                        case 203
+                            depth = 360;
+                        otherwise
+                            depth = 405;
+                    end
+                    CaImagingDataSet(tot_Unit).depth_in_um          = depth;
                     CaImagingDataSet(tot_Unit).ML_in_um             = nan;
                     CaImagingDataSet(tot_Unit).AP_in_um             = nan;
                     CaImagingDataSet(tot_Unit).cell_type            = 'non_classified';
