@@ -41,10 +41,6 @@ for nData = 1:2
         
         nDataSet(nUnit).unit_yes_trial = g(param, unit_yes_trial_linear) + yesIntNoise;
         nDataSet(nUnit).unit_no_trial  = g(param, unit_no_trial_linear) + noIntNoise;
-%         nDataSet(nUnit).unit_yes_error = g(param, nDataSet(nUnit).unit_yes_error_linear) + ...
-%                                             yesNoise(randpermLargeK(numTrial, size(nDataSet(nUnit).unit_yes_error, 1)), :);
-%         nDataSet(nUnit).unit_no_error  = g(param, nDataSet(nUnit).unit_no_error_linear) + ...
-%                                             noNoise(randpermLargeK(numTrial, size(nDataSet(nUnit).unit_no_error, 1)), :);
     end
     save([TempDatDir DataSetList(2+nData).name '.mat'], 'nDataSet');     
 end

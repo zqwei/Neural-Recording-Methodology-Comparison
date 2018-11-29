@@ -1,9 +1,9 @@
 addpath('../Func');
 setDir;
-load ([TempDatDir 'DataListS2CModel.mat']);
+% load ([TempDatDir 'DataListS2CModel.mat']);
+load ([TempDatDir 'DataListS2CS1Model.mat']);
 
-
-for nData     = 1:length(DataSetList)
+for nData     = 2 %1:length(DataSetList)
     load([TempDatDir DataSetList(nData).name '.mat'])
     numTimeBin          = size(nDataSet(1).unit_yes_trial, 2);
     yesProfileMatrix    = nan(length(nDataSet), numTimeBin);
@@ -57,4 +57,4 @@ for nData     = 1:length(DataSetList)
     setPrint(8, 3, [PlotDir 'SingleUnitsPeakLocation\SingleUnitsMaxLocationPosNeuron_' DataSetList(nData).name])
 end
 
-close all
+% close all

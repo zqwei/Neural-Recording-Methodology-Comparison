@@ -27,6 +27,31 @@ for nData      = [3 4]
     set(gca, 'TickDir', 'out')
     setPrint(8, 6, [PlotDir 'SingleUnitsTscore/SingleUnitsTscoreTime_' DataSetList(nData).name])
 end
+
+
+
+load ([TempDatDir 'DataListS2CS1Model.mat']);
+
+cmap = [0.8000    0.8000    0.8000;
+       1.0000    0.6000         0;
+       0    0.8000         0];
+
+for nData      = [2]
+    load([TempDatDir DataSetList(nData).name '.mat'])    
+    unitGroup = getLogPValueTscoreSpikeTime(nDataSet, DataSetList(nData).params);       
+    sizeGroup = histcounts(unitGroup, 0:3);
+    % disp([sizeGroup(2), sizeGroup(3)])
+    figure('Visible', 'off');
+    groupNames      = {'Non.', 'Homo.', 'Dynamical'};
+    pie(sizeGroup)
+    disp(sizeGroup/sum(sizeGroup))
+    disp(sum(sizeGroup))
+    colormap(cmap)
+    set(gca, 'TickDir', 'out')
+    setPrint(8, 6, [PlotDir 'SingleUnitsTscore/SingleUnitsTscoreTime_' DataSetList(nData).name], 'png')
+end
+
+
 close all
 
 

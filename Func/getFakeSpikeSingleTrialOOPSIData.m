@@ -35,8 +35,8 @@ function DataSetOOPSI = getFakeSpikeSingleTrialOOPSIData(spikeDataSet)
         caData                                   = caData';
         fastData                                 = imagingToSpike(caData(:)');
         
-        numYesTrial                              = length(spikeDataSet(nData).unit_yes_trial_index);
-        numNoTrial                               = length(spikeDataSet(nData).unit_no_trial_index);
+        numYesTrial                              = size(spikeDataSet(nData).unit_yes_trial, 1);
+        numNoTrial                               = size(spikeDataSet(nData).unit_no_trial, 1);
         numT                                     = size(spikeDataSet(nData).unit_yes_trial, 2);
         
         fastData                                 = reshape(fastData, numT, numYesTrial + numNoTrial);
