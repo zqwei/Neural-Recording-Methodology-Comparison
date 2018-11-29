@@ -261,7 +261,7 @@ nDataSet               = getSpikeDataWithEphysTime(SpikingS1NuoDir, SpikingS1Nuo
 DataSetList(11).name    = 'Shuffle_Spikes_Nuo_S1_Short_Delay';
 DataSetList(11).params  = params; 
 DataSetList(11).ActiveNeuronIndex = findHighFiringUnits(nDataSet, params, minFiringRate);
-save([TempDatDir DataSetList(11).name '.mat'], 'nDataSet');
+save([TempDatDir DataSetList(11).name '_old.mat'], 'nDataSet');
 
 
 minNumTrialToAnalysis  = 15;
@@ -312,12 +312,17 @@ for nData           = 1:length(fileList)
     DataSetList(nData).ROCIndex  = ROCPop(nDataSet, DataSetList(nData).params);
     for nUnit  = 1:length(nDataSet)
         nFileList                                     = fileList{nData};
-        DataSetList(nData).cellinfo(nUnit).fileName   = nFileList(nDataSet(nUnit).sessionIndex).name;
+        if nData ~= 12
+            sessionIndex = nDataSet(nUnit).sessionIndex;
+        else
+            sessionIndex = floor(nDataSet(nUnit).sessionIndex/100);
+        end
+        DataSetList(nData).cellinfo(nUnit).fileName   = nFileList(sessionIndex).name;
         if isfield(nDataSet(nUnit), 'animalNameIndex')
             DataSetList(nData).cellinfo(nUnit).anmName= nDataSet(nUnit).animalNameIndex;
         else
-            animalNameIndex                               = strfind(nFileList(nDataSet(nUnit).sessionIndex).name, '_');
-            DataSetList(nData).cellinfo(nUnit).anmName    = nFileList(nDataSet(nUnit).sessionIndex).name(1:animalNameIndex(1));
+            animalNameIndex                               = strfind(nFileList(sessionIndex).name, '_');
+            DataSetList(nData).cellinfo(nUnit).anmName    = nFileList(sessionIndex).name(1:animalNameIndex(1));
         end
         DataSetList(nData).cellinfo(nUnit).nUnit      = nDataSet(nUnit).nUnit;
         DataSetList(nData).cellinfo(nUnit).AP_axis    = nDataSet(nUnit).AP_in_um;
@@ -328,6 +333,8 @@ for nData           = 1:length(fileList)
             DataSetList(nData).cellinfo(nUnit).cellType   = 2;
         elseif strcmp(nDataSet(nUnit).cell_type, 'putative_pyramidal')
             DataSetList(nData).cellinfo(nUnit).cellType   = 1;
+        elseif strcmp(nDataSet(nUnit).cell_type, 'unclassified')
+            DataSetList(nData).cellinfo(nUnit).cellType   = 0;
         else
             DataSetList(nData).cellinfo(nUnit).cellType   = nDataSet(nUnit).cell_type;
         end        
@@ -339,11 +346,22 @@ for nData     = [1 8:9]
     cellType = [DataSetList(nData).cellinfo.cellType];
     depth = [DataSetList(nData).cellinfo.depth];
     validCellIndex = cellType==1 & depth>100 & depth<800;
-    DataSetList(nData).ActiveNeuronIndex = DataSetList(1).ActiveNeuronIndex(validCellIndex);
-    DataSetList(nData).cellinfo = DataSetList(1).cellinfo(validCellIndex);
-    DataSetList(nData).ROCIndex = DataSetList(1).ROCIndex(validCellIndex, :);
-    
-    
+    DataSetList(nData).ActiveNeuronIndex = DataSetList(nData).ActiveNeuronIndex(validCellIndex);
+    DataSetList(nData).cellinfo = DataSetList(nData).cellinfo(validCellIndex);
+    DataSetList(nData).ROCIndex = DataSetList(nData).ROCIndex(validCellIndex, :);
+    load([TempDatDir DataSetList(nData).name '_old.mat'], 'nDataSet');
+    nDataSet = nDataSet(validCellIndex);
+    save([TempDatDir DataSetList(nData).name '.mat'], 'nDataSet');
+end
+
+
+for nData     = [11]
+    cellType = [DataSetList(nData).cellinfo.cellType];
+    depth = [DataSetList(nData).cellinfo.depth];
+    validCellIndex = cellType==1;% & depth>100 & depth<450;
+    DataSetList(nData).ActiveNeuronIndex = DataSetList(nData).ActiveNeuronIndex(validCellIndex);
+    DataSetList(nData).cellinfo = DataSetList(nData).cellinfo(validCellIndex);
+    DataSetList(nData).ROCIndex = DataSetList(nData).ROCIndex(validCellIndex, :);
     load([TempDatDir DataSetList(nData).name '_old.mat'], 'nDataSet');
     nDataSet = nDataSet(validCellIndex);
     save([TempDatDir DataSetList(nData).name '.mat'], 'nDataSet');
