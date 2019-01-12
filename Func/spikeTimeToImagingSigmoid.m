@@ -36,7 +36,11 @@ function [CaImaging, Ca]    = spikeTimeToImagingSigmoid(spikeTimes, timeSeriesDa
         tSpikeTimes           = spikeTimes{nTrial};
         if ~isempty(tSpikeTimes)
             tPreSamplePoints      = tSpikeTimes(1) - preSamplePoints(nTrial, :);
-            tSpikeTimes           = [tPreSamplePoints(end:-1:1), tSpikeTimes'];
+            try
+                tSpikeTimes       = [tPreSamplePoints(end:-1:1), tSpikeTimes'];
+            catch
+                tSpikeTimes       = [tPreSamplePoints(end:-1:1), tSpikeTimes];
+            end
             for nSpike            = 1:length(tSpikeTimes)
                 Delta_t           = max(timeSeriesData - tSpikeTimes(nSpike),0);
                 Ca(nTrial,:)      = Ca(nTrial,:) + exp(-Delta_t/tau_decay).*(1-exp(-Delta_t/tau_rise));

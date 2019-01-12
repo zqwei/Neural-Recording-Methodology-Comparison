@@ -5,33 +5,40 @@ setDir;
 load ([TempDatDir 'DataListShuffle.mat']);
 
 % ephys
-nData    = 10;
-params   = DataSetList(nData).params;
-timePoints  = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
-load([TempDatDir DataSetList(nData).name '.mat'])
-m        = 2;
+nDatalist= [1 9];
 
 figure;
-barSeries   = 0:0.3:15;
-dist        = 'Poisson';
-for nPlot   = 1:4
-    nPeriodData = dataInPeriods(nDataSet, timePoints, nPlot);
-    subplot(m, m, nPlot)
-    hold on;
-    barData     = nan(length(nPeriodData), 1);
-    for nUnit   = 1:length(nPeriodData)
-        barData(nUnit) = mean(nPeriodData(nUnit).unit_yes_trial);
+
+for nData = nDatalist
+    params   = DataSetList(nData).params;
+    timePoints  = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
+    load([TempDatDir DataSetList(nData).name '.mat'])
+    m        = 2;
+
+
+    barSeries   = 0:1:15;
+    dist        = 'Poisson';
+    for nPlot   = 1:4
+        nPeriodData = dataInPeriods(nDataSet, timePoints, nPlot);
+        subplot(m, m, nPlot)
+        hold on;
+        barData     = nan(length(nPeriodData), 1);
+        for nUnit   = 1:length(nPeriodData)
+            barData(nUnit) = mean(nPeriodData(nUnit).unit_yes_trial);
+        end
+        barSign     = 1;
+        barHistWithDist(barData(:), dist, '', barSeries, 'b', barSign); 
+        barData     = nan(length(nPeriodData), 1);
+        for nUnit   = 1:length(nPeriodData)
+            barData(nUnit) = mean(nPeriodData(nUnit).unit_no_trial);
+        end
+        barSign     = -1;
+        barHistWithDist(barData(:), dist, '', barSeries, 'r', barSign); 
+        hold off;
     end
-    barSign     = 1;
-    barHistWithDist(barData(:), dist, '', barSeries, 'b', barSign); 
-    barData     = nan(length(nPeriodData), 1);
-    for nUnit   = 1:length(nPeriodData)
-        barData(nUnit) = mean(nPeriodData(nUnit).unit_no_trial);
-    end
-    barSign     = -1;
-    barHistWithDist(barData(:), dist, '', barSeries, 'r', barSign); 
-    hold off;
 end
+
+setPrint(8, 6, 'FR_distribution', 'pdf')
 
 % % whole cell
 % nData = 9;

@@ -21,6 +21,7 @@ function SpikeDataSet = getHiIntraSpikeDataWithEphysTime(SpikingDataDir, SpikeFi
                                 'unit_yes_trial', 1, 'unit_no_trial', 1),length(SpikeFileList), 1);
     h                  = waitbar(0,'Initializing data loads...');
     
+    v_thres            = 10;
     
     for nfile = 1:length(SpikeFileList)        
         fname               = SpikeFileList(nfile).name;
@@ -46,7 +47,7 @@ function SpikeDataSet = getHiIntraSpikeDataWithEphysTime(SpikingDataDir, SpikeFi
             trialTimeset       = nb.timeSeriesArrayHash.value{1}.time(trialTimeTag) - trial_start;
             voltage_diff       = nb.timeSeriesArrayHash.value{1}.valueMatrix(1, trialTimeTag) ...
                                  - nb.timeSeriesArrayHash.value{1}.valueMatrix(2, trialTimeTag);
-            voltage_diff(voltage_diff<20) = 0;
+            voltage_diff(voltage_diff<v_thres) = 0;
             [~, unit_trial_spikes] = findpeaks(voltage_diff, trialTimeset);
             
             unit_trial         = unit_trial_spikes - end_delay;
@@ -67,7 +68,7 @@ function SpikeDataSet = getHiIntraSpikeDataWithEphysTime(SpikingDataDir, SpikeFi
             trialTimeset       = nb.timeSeriesArrayHash.value{1}.time(trialTimeTag) - trial_start;
             voltage_diff       = nb.timeSeriesArrayHash.value{1}.valueMatrix(1, trialTimeTag) ...
                                  - nb.timeSeriesArrayHash.value{1}.valueMatrix(2, trialTimeTag);
-            voltage_diff(voltage_diff<20) = 0;
+            voltage_diff(voltage_diff<v_thres) = 0;
             [~, unit_trial_spikes] = findpeaks(voltage_diff, trialTimeset);
             
             unit_trial         = unit_trial_spikes - end_delay;
@@ -102,7 +103,7 @@ function SpikeDataSet = getHiIntraSpikeDataWithEphysTime(SpikingDataDir, SpikeFi
             trialTimeset       = nb.timeSeriesArrayHash.value{1}.time(trialTimeTag) - trial_start;
             voltage_diff       = nb.timeSeriesArrayHash.value{1}.valueMatrix(1, trialTimeTag) ...
                                  - nb.timeSeriesArrayHash.value{1}.valueMatrix(2, trialTimeTag);
-            voltage_diff(voltage_diff<20) = 0;
+            voltage_diff(voltage_diff<v_thres) = 0;
             [~, unit_trial_spikes] = findpeaks(voltage_diff, trialTimeset);
             
             unit_trial         = unit_trial_spikes - end_delay;
@@ -123,7 +124,7 @@ function SpikeDataSet = getHiIntraSpikeDataWithEphysTime(SpikingDataDir, SpikeFi
             trialTimeset       = nb.timeSeriesArrayHash.value{1}.time(trialTimeTag) - trial_start;
             voltage_diff       = nb.timeSeriesArrayHash.value{1}.valueMatrix(1, trialTimeTag) ...
                                  - nb.timeSeriesArrayHash.value{1}.valueMatrix(2, trialTimeTag);
-            voltage_diff(voltage_diff<20) = 0;
+            voltage_diff(voltage_diff<v_thres) = 0;
             [~, unit_trial_spikes] = findpeaks(voltage_diff, trialTimeset);
             
             unit_trial         = unit_trial_spikes - end_delay;
