@@ -1,10 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Collected population decision decodability over time
-%
-% Different ROC
-% Same number of neurons
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 addpath('../Func');
 setDir;
 
@@ -30,7 +23,7 @@ numTestTrials       = numRandPickUnits*2;
 numTrainingTrials   = numTrials - numTestTrials;
 ROCThres            = 0.50;
 
-for nData             = 10 %[1 3 4]    
+for nData             = [1 3 4]    
     if nData == 1
         load([TempDatDir DataSetList(nData).name '.mat'])
         selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
@@ -79,20 +72,5 @@ for nData             = 10 %[1 3 4]
     hold off;
     xlabel('Time (s)');
     ylabel('Decodability');
+    save(['CD_for_barplot' DataSetList(nData).name '.mat'], 'decodability')
 end
-
-% setPrint(8, 6, [PlotDir 'CollectedUnitsDecodability/CollectedUnitsDecodabilityROC_Summary'])
-% margNames = {'Spike', '', 'GP 4.3', '6s-AAV'};
-% 
-% figure;
-% hold on
-% for nColor = [1 3 4]
-%     plot(0, nColor, 's', 'color', cmap(nColor,:), 'MarkerFaceColor',cmap(nColor,:),'MarkerSize', 8)
-%     text(1, nColor, margNames{nColor})
-% end
-% xlim([0 10])
-% hold off
-% axis off
-% setPrint(3, 2, [PlotDir 'CollectedUnitsDecodability/CollectedUnitsDecodabilityROC_SummaryLabel'])
-% 
-% close all;
