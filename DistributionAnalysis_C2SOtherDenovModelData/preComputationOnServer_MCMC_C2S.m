@@ -1,37 +1,8 @@
 addpath('../Func');
 setDir;
-
 load([TempDatDir 'DataListShuffle.mat'], 'DataSetList');
-load([TempDatDir DataSetList(1).name '.mat'])
-params    = DataSetList(1).params;
-binSize   = params.binsize;
-
-numTime   = length(params.timeSeries);
-numNeuron = length(nDataSet);
-timePoints= timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
-
-% instanteous noise level
-var_mat   = nan(numNeuron, numTime * 2); 
-sig_mat   = nan(numNeuron, numTime * 2); 
-
-for nNeuron = 1:numNeuron
-   sig_mat(nNeuron, 1:numTime)     = mean(nDataSet(nNeuron).unit_yes_trial);
-   var_mat(nNeuron, 1:numTime)     = var(nDataSet(nNeuron).unit_yes_trial);
-   sig_mat(nNeuron, 1+numTime:end) = mean(nDataSet(nNeuron).unit_no_trial);
-   var_mat(nNeuron, 1+numTime:end) = var(nDataSet(nNeuron).unit_no_trial);
-end
-
-noise_dist = (var_mat(:)*params.binsize^2)./(sig_mat(:)*params.binsize);
-per_list   = 10:98;
-noise_factor_list = prctile(noise_dist, per_list);
-
-params            = DataSetList(2).params;
-indexDatasets     = [3, 4, 10];
-% 2: short Ca GP517
-% 3: short Ca slow
-% 4: short Ca slow virus
-% 5: long Ca fast
-% 6: long Ca slow
+dataSetNames   = {'ModelSpikeMCMCSingleTrial_OOPSI_Ca_Fast_SShort_Delay','ModelSpikeMCMCSingleTrial_OOPSI_Ca_Slow_Short_Delay_Virus', 'ModelSpikeMCMCSingleTrial_OOPSI_Ca_Slow_Short_Delay'};
+indexDatasets  = [10, 4, 3];
 
 numComps       = 3;
 combinedParams = {{1}, {2}, {[1 2]}};
@@ -41,61 +12,24 @@ numFold        = 1;
 numTrialsLDA   = 500;
 numTestTrials  = 200;
 numTrainingTrials = numTrialsLDA - numTestTrials;
-numRandPickUnits  = 40;% 40; % nData = 10
-factorSet         = [0 0 2.5 5.5 0 0 0 0 0 2.5 0 0 0 0 0 0];
+numRandPickUnits  = 50;
 
-for nData         = 10%indexDatasets    
-    
-    params        = DataSetList(nData).params;
-    numT          = length(params.timeSeries);
-    timeTag       = 8:(numT-3);
-    load([TempDatDir 'directNLDeconv_' DataSetList(nData).name '.mat'], 'yesData', 'noData');   
+for nData         = 1:length(dataSetNames)        
+    load([TempDatDir dataSetNames{nData} '.mat']);   
     analysisMat   = repmat(struct('nParaSet',1, 'pCa0', 1, ...
-                                'pTaud', 1, 'sizeGroup', 1),900, 1);
-    numUnit       = size(yesData, 2);
-    allYesData    = yesData;
-    allNoData     = noData;
+                                'pTaud', 1, 'sizeGroup', 1),100, 1);
+    yesData       = nDataSet(1).unit_no_trial;
+    numUnit       = length(nDataSet);
+    numT          = size(yesData, 2);
+    timeTag       = 8:(numT-3);
+    spikeDataSet  = nDataSet;
+    params        = DataSetList(indexDatasets(nData)).params;
     
-    randTau       = randi(88, 1000, numUnit)+9;
-    randFF        = randi(length(noise_factor_list), 1000, numUnit);
-    nDataSet      = repmat(struct('unit_yes_trial', 1, 'unit_no_trial', 1),numUnit, 1);
-    validUnit     = true(numUnit, 1);
-    
-    invalidPara   = 0;
-    
-    for nParaSet  = 1:1000        
-        
-        disp(nParaSet)
-        
-        for nUnit = 1:numUnit
-            ffactor = noise_factor_list(randFF(nParaSet, nUnit));
-            mean_yes_trial = squeeze(allYesData(randTau(nParaSet, nUnit), nUnit, :))';
-            std_yes_trial  = ones(numTrialsLDA/2, 1) * sqrt(mean_yes_trial* ffactor/params.binsize) .* randn(numTrialsLDA/2, numT);
-            min_std_yes_trial = min(std_yes_trial)./mean_yes_trial;
-            mean_no_trial  = squeeze(allNoData(randTau(nParaSet, nUnit), nUnit, :))';
-            std_no_trial   = ones(numTrialsLDA/2, 1) * sqrt(mean_no_trial* ffactor/params.binsize) .* randn(numTrialsLDA/2, numT);
-            min_std_no_trial = min(std_no_trial)./mean_no_trial;
-            nfactor          = factorSet(nData);
-            nDataSet(nUnit).unit_yes_trial   = bsxfun(@plus, mean_yes_trial * nfactor, std_yes_trial*sqrt(nfactor));
-            nDataSet(nUnit).unit_no_trial    = bsxfun(@plus, mean_no_trial * nfactor, std_no_trial*sqrt(nfactor));
-            if sum(isnan(nDataSet(nUnit).unit_yes_trial(:)))+sum(isnan(nDataSet(nUnit).unit_no_trial(:)))>0
-                validUnit(nUnit) = false;
-            end
-        end
-        
-        nDataSet  = nDataSet(validUnit);
-        if size(nDataSet, 1) < 20
-            invalidPara = invalidPara + 1;
-            analysisMat(nParaSet).nParaSet     = nParaSet;
-            analysisMat(nParaSet).sizeGroup    = nan(1, 3);
-            analysisMat(nParaSet).peakiness    = nan;
-            analysisMat(nParaSet).PCAVar       = nan(3, 3);
-            analysisMat(nParaSet).decodability = nan(1, numT);
-            continue;
-        end
-        
+    for nParaSet  = 1:100              
+        disp(nParaSet)        
+        nDataSet  = spikeDataSet(rand(numUnit, 1)<0.9);        
         % cell type data
-        unitGroup = getLogPValueTscoreC2STime(nDataSet, params);       
+        unitGroup = getLogPValueTscoreSpikeTime(nDataSet, params);       
         sizeGroup = histcounts(unitGroup, 0:3); % record this for cell type data
         
         % peakiness
@@ -139,7 +73,7 @@ for nData         = 10%indexDatasets
         PCAVar             = PCAmargVar(:, 1:numComps)';
         
         %lda
-        decodability            = nan(numFold, size(nDataSet(1).unit_yes_trial,2));        
+        decodability            = zeros(numFold, size(nDataSet(1).unit_yes_trial,2));        
         for nFold    = 1:numFold
             trainingTargets     = [true(numTrainingTrials/2,1); false(numTrainingTrials/2,1)];
             trainingTargets     = trainingTargets(randperm(numTrainingTrials));
@@ -153,6 +87,9 @@ for nData         = 10%indexDatasets
             if numRandPickUnits < length(nDataSet)
                 randPickUnits   = randPickUnits(1:numRandPickUnits);
             end
+            if length(nDataSet) < 10
+                continue;
+            end
             nSessionData        = shuffleSessionData(nDataSet(randPickUnits), totTargets, numTestTrials);
             decodability(nFold,:) = decodabilityLDA(nSessionData, trainingTargets, testTargets);
         end
@@ -163,5 +100,5 @@ for nData         = 10%indexDatasets
         analysisMat(nParaSet).decodability = decodability;
     end
     
-    save([TempDatDir 'ResultsCompiledNLC2S_' DataSetList(nData).name '.mat'], 'analysisMat', 'randTau', 'randFF');
+    save([TempDatDir 'ResultsCompiledMCMCC2S_' dataSetNames{nData} '.mat'], 'analysisMat');
 end
