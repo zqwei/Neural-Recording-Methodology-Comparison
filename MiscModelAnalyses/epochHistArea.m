@@ -5,13 +5,11 @@ setDir;
 load ([TempDatDir 'DataListShuffle.mat']);
 
 % ephys
-nDatalist= 1;
 
 figure;
+barSeries   = 0:0.1:5;
 
-barSeries   = 0:1:15;
-
-for nData = nDatalist
+for nData = 1
     params   = DataSetList(nData).params;
     timePoints  = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
     timePoints  = [timePoints(2), timePoints(end)];
@@ -20,20 +18,27 @@ for nData = nDatalist
     
     dist        = 'Poisson';
     nPlot       = 1;
+    nPeriodData_pre = dataInPeriods(nDataSet, [1 timePoints(1)], nPlot);
+    barDataMean = nan(length(nPeriodData), 1);
+    for nUnit   = 1:length(nPeriodData_pre)
+        barDataMean(nUnit) = mean([nPeriodData_pre(nUnit).unit_yes_trial; nPeriodData_pre(nUnit).unit_no_trial]);
+    end
+    
     nPeriodData = dataInPeriods(nDataSet, timePoints, nPlot);
     hold on;
     barData     = nan(length(nPeriodData), 2);
     for nUnit   = 1:length(nPeriodData)
-        barData(nUnit,1) = mean(nPeriodData(nUnit).unit_yes_trial);
+        barData(nUnit,1) = max(mean(nPeriodData(nUnit).unit_yes_trial)/barDataMean(nUnit)-1, 0);
     end
     barSign     = 1;
 %     barHistWithDist(barData(:), dist, '', barSeries, 'b', barSign); 
 %     barData     = nan(length(nPeriodData), 1);
     for nUnit   = 1:length(nPeriodData)
-        barData(nUnit, 2) = mean(nPeriodData(nUnit).unit_no_trial);
+        barData(nUnit, 2) = max(mean(nPeriodData(nUnit).unit_no_trial)/barDataMean(nUnit)-1, 0);
     end
 %     barSign     = -1;
-    barHistWithDist(mean(barData, 2), dist, '', barSeries, 'r', barSign); 
+    barData(barData==0) = nan;
+    barHistWithDist(nanmean(barData, 2), dist, '', barSeries, 'r', barSign); 
     hold off;
 end
 
@@ -66,9 +71,16 @@ for nData = 4
         barData(nUnit, 2) = sum(max(nPeriodData(nUnit).unit_no_trial, 0))/ca_factor(1)/(params.timeSeries(end)-params.polein);
     end
 %     barSign     = -1;
-    barHistWithDist(mean(barData, 2), dist, '', barSeries, 'k', barSign); 
+    barData(barData==0) = nan;
+    barHistWithDist(nanmean(barData, 2), dist, '', barSeries, 'k', barSign); 
     hold off;
 end
+
+xlabel('(R-R_{pre})/R_{pre}')
+ylabel('Frequency')
+legend({'Ephys', '6s-AAV'})
+box off
+set(gca, 'TickDir', 'out')
 
 % nDatalist= 1;
 % barSeries   = 0:1:15;

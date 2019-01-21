@@ -73,6 +73,12 @@ for nData     = [1 10]
     hold off
     setPrint(8, 3, [PlotDir 'SingleUnitsPeakLocation\SingleUnitsMaxLocationPosNeuron_' DataSetList(nData).name])
     setPrint(8, 3, [PlotDir 'SingleUnitsPeakLocation\' DataSetList(nData).name '_peakness'], 'svg')
+    if nData == 1
+        refEphysFast.peak = bootstat;
+    end
+    if nData == 10
+        performanceMat(3).peak = bootstat;
+    end
 end
 
 close all

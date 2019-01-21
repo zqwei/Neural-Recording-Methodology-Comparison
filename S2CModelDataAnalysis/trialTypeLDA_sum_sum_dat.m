@@ -6,7 +6,7 @@ flist   = dir('decodabilityAll_*.mat');
 
 for nfile = 1:length(flist)
     load(flist(nfile).name, 'decodabilityAll')
-    decode_ = squeeze(mean(decodabilityAll(5, :, :), 2));
+    decode_ = squeeze(mean(decodabilityAll(3, :, :), 2));
     disp(flist(nfile).name)
     mean_   = [];
     std_    = [];
