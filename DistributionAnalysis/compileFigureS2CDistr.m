@@ -28,7 +28,7 @@ for nData = 1:3
     tmp_s = performanceMat(4-nData).mono;
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(2, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(2, :), 'edgecolor', 'none');
     
     if nData == 1
         tmp_s = refEphysFast.mono;
@@ -37,7 +37,8 @@ for nData = 1:3
     end
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(3, :), 'linewid', 1);
+    % plot(xi, fs/f_*0.97+nData, '--', 'color', line_color(3, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(3, :), 'edgecolor', 'none');
     
 end
 ylim([0.9, 4.1])
@@ -61,7 +62,7 @@ for nData = 1:3
     tmp_s = performanceMat(4-nData).multi;
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(2, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(2, :), 'edgecolor', 'none');
     
     if nData == 1
         tmp_s = refEphysFast.multi;
@@ -70,7 +71,8 @@ for nData = 1:3
     end
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(3, :), 'linewid', 1);
+    % plot(xi, fs/f_*0.97+nData, '--', 'color', line_color(3, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(3, :), 'edgecolor', 'none');
     
 end
 ylim([0.9, 4.1])
@@ -92,7 +94,7 @@ for nData = 1:3
     tmp_s = performanceMat(4-nData).peak;
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(2, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(2, :), 'edgecolor', 'none');
     
     if nData == 1
         tmp_s = refEphysFast.peak;
@@ -101,7 +103,8 @@ for nData = 1:3
     end
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(3, :), 'linewid', 1);
+    % plot(xi, fs/f_*0.97+nData, '--', 'color', line_color(3, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(3, :), 'edgecolor', 'none');
 end
 ylim([0.9, 4.1])
 xlim([0.29 1.51])
@@ -127,7 +130,7 @@ for nData = 1:3
     tmp_s = 1 - tmp_(:, 2, 1)./sum(tmp_(:, :, 1), 2);
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(2, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(2, :), 'edgecolor', 'none');
     
     if nData == 1
         tmp_ = refEphysFast.pca;
@@ -137,9 +140,8 @@ for nData = 1:3
     tmp_s = 1 - tmp_(:, 2, 1)./sum(tmp_(:, :, 1), 2);
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(3, :), 'linewid', 1);
-    
-    
+    % plot(xi, fs/f_*0.97+nData, '--', 'color', line_color(3, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(3, :), 'edgecolor', 'none');    
 end
 ylim([0.9, 4.1])
 xlim([0 1.01])
@@ -163,7 +165,7 @@ for nData = 1:3
     tmp_s = performanceMat(4-nData).ldaS;
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(2, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(2, :), 'edgecolor', 'none');
     
     if nData == 1
         tmp_s = refEphysFast.ldaS;
@@ -172,7 +174,8 @@ for nData = 1:3
     end
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(3, :), 'linewid', 1);
+    % plot(xi, fs/f_*0.97+nData, '--', 'color', line_color(3, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(3, :), 'edgecolor', 'none');
 end
 ylim([0.9, 4.1])
 xlim([0.5 1.01])
@@ -196,7 +199,7 @@ for nData = 1:3
     tmp_s = performanceMat(4-nData).ldaD;
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(2, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(2, :), 'edgecolor', 'none');
     
     if nData == 1
         tmp_s = refEphysFast.ldaD;
@@ -205,7 +208,8 @@ for nData = 1:3
     end
     fs = ksdensity(tmp_s, xi);
     f_ = max(fs);
-    plot(xi, fs/f_*0.97+nData, '-', 'color', line_color(3, :), 'linewid', 1);
+    % plot(xi, fs/f_*0.97+nData, '--', 'color', line_color(3, :), 'linewid', 1);
+    fill([xi xi(end) xi(1)], [fs 0 0]/f_*0.97+nData, line_color(3, :), 'edgecolor', 'none');
 end
 ylim([0.9, 4.1])
 xlim([0.5  1.01])
