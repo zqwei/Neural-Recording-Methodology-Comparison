@@ -9,22 +9,12 @@ addpath('../Func');
 setDir;
 load ([TempDatDir 'DataListShuffle.mat']);
 
-
-if ~exist([PlotDir 'SingleUnitsTscore'],'dir')
-    mkdir([PlotDir 'SingleUnitsTscore'])
-end
-
 cmap = cbrewer('qual', 'Set1', 9, 'cubic');
 cmap = cmap([3, 5, 9], :);
 groupColors = {cmap(3, :), cmap(2, :), cmap(1, :)};
 
 for nData      = 1:length(DataSetList)
-    if ~exist([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'], 'file')
-        load([TempDatDir DataSetList(nData).name '.mat']);
-        neuronRemoveList = false(length(nDataSet), 1);
-    else
-        load([TempDatDir DataSetList(nData).name '_withOLRemoval.mat']);
-    end
+    load([TempDatDir DataSetList(nData).name '.mat']);
     unitGroup = getLogPValueTscoreSpikeTime(nDataSet, DataSetList(nData).params);
     sizeGroup = histcounts(unitGroup, 0:3);
     figure('Visible', 'off');
@@ -37,3 +27,5 @@ for nData      = 1:length(DataSetList)
     legend('boxoff')
     setPrint(8, 6, [PlotDir 'WebsitePlots/' DataSetList(nData).name '_selectivity'], 'svg')
 end
+
+close all
