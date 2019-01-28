@@ -21,6 +21,7 @@ function DataSetOOPSI = getFakeSpikeSingleTrialOOPSIData(spikeDataSet)
                                 'unit_yes_trial', 1, 'unit_no_trial', 1),length(spikeDataSet), 1);
 
     for nData          = 1:length(spikeDataSet)     
+        disp([num2str(nData) '/' num2str(length(spikeDataSet))])
         DataSetOOPSI(nData).sessionIndex     = spikeDataSet(nData).sessionIndex;
         DataSetOOPSI(nData).nUnit            = spikeDataSet(nData).nUnit;
         DataSetOOPSI(nData).depth_in_um      = spikeDataSet(nData).depth_in_um;

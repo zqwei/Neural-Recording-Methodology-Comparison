@@ -16,16 +16,12 @@ numTrainingTrials   = numTrials - numTestTrials;
 ROCThres            = 0.5;
 
 load ([TempDatDir 'DataListShuffle.mat']);
-addNoise            = zeros(length(DataSetList), 1);
-
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
-
-
 if ~exist([PlotDir '/CollectedUnitsDecodability'],'dir')
     mkdir([PlotDir '/CollectedUnitsDecodability'])
 end
 
-stepSize            = 50; % 15 for the last data.
+stepSize            = 50;
 
 for nData      = 1:length(DataSetList)
     if ~exist([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'], 'file')
@@ -57,7 +53,7 @@ for nData      = 1:length(DataSetList)
             randPickUnits       = randPickUnits(1:num_);
 
             nSessionData        = shuffleSessionData(nDataSet(randPickUnits), totTargets, numTestTrials);
-            decodability(nFold,:) = decodabilityLDA(nSessionData +randn(size(nSessionData))*1e-3/sqrt(numTrials)* addNoise(nData), trainingTargets, testTargets);
+            decodability(nFold,:) = decodabilityLDA(nSessionData, trainingTargets, testTargets);
         end
         figure;
         hold on

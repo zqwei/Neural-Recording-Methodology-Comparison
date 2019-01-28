@@ -3,14 +3,7 @@ setDir;
 load ([TempDatDir 'DataListShuffle.mat']);
 
 for nData     = 1:length(DataSetList)
-    if ~exist([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'], 'file')
-        load([TempDatDir DataSetList(nData).name '.mat'])
-        neuronRemoveList = false(length(nDataSet), 1);
-    else
-        load([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'])
-    end
-    
-    disp(DataSetList(nData).name)
+    load([TempDatDir DataSetList(nData).name '.mat'])
     params      = DataSetList(nData).params;
     timePoints  = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
     
