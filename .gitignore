@@ -30,3 +30,4 @@ S2CParameterExpoloration/
 *.docx
 *.pptx
 *.zip
+generateDatasets.m
