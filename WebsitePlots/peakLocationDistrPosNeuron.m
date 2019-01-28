@@ -2,11 +2,7 @@ addpath('../Func');
 setDir;
 load ([TempDatDir 'DataListShuffle.mat']);
 
-if ~exist([PlotDir 'SingleUnitsPeakLocation'],'dir')
-    mkdir([PlotDir 'SingleUnitsPeakLocation'])
-end
-
-for nData     = [1 3 4 10 11 12]%1:length(DataSetList)
+for nData     = 1:length(DataSetList)
     if ~exist([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'], 'file')
         load([TempDatDir DataSetList(nData).name '.mat'])
         neuronRemoveList = false(length(nDataSet), 1);
@@ -41,23 +37,20 @@ for nData     = [1 3 4 10 11 12]%1:length(DataSetList)
     [~, maxId]    = max(actMat, [], 2);
 
     timeStep  = DataSetList(nData).params.timeSeries;
-    timeTag   = timePoints(2):timePoints(4)+13; % sample to response
+    timeTag   = timePoints(2):timePoints(4)+13;
     numTime   = length(timeTag);
     polein    = DataSetList(nData).params.polein;
     poleout   = DataSetList(nData).params.poleout;
     
     countMaxId = hist(maxId, 1:numTimeBin*2)/size(actMat,1)*100;
-    std(countMaxId([timeTag, timeTag+numTimeBin]))%/mean(countMaxId([timeTag, timeTag+77]))
-    [bootstat,bootsam] = bootstrp(1000,@std,countMaxId([timeTag, timeTag+numTimeBin]));
-    std(bootstat)
     figure;
     hold on;
     bplot = bar(timeStep, countMaxId(1:numTimeBin), 1, 'facecolor', 'b', 'edgecolor', 'none');
     bplot.FaceAlpha = 0.5;
     bplot = bar(timeStep, countMaxId(1+numTimeBin:end), 1, 'facecolor', 'r', 'edgecolor', 'none');
     bplot.FaceAlpha = 0.5;
-    xlim([timeStep(1) params.timeSeries(end)])
-%     ylim([0 8])
+    xlim([timeStep(1) params.timeSeries(end)]);
+    ylim([0 13])
     preBin = sum(DataSetList(nData).params.timeSeries<polein);
     gridxy ([polein, poleout, 0],[1/(numTimeBin-preBin)/2*100], 'Color','k','Linestyle','--','linewid', 1.0)
     box off
@@ -65,18 +58,7 @@ for nData     = [1 3 4 10 11 12]%1:length(DataSetList)
     ylabel('% Max peak')
     xlabel('Time')
     hold off
-    setPrint(8, 3, [PlotDir 'SingleUnitsPeakLocation\SingleUnitsMaxLocationPosNeuron_' DataSetList(nData).name], 'png')
-%     setPrint(8, 3, [PlotDir 'SingleUnitsPeakLocation\' DataSetList(nData).name '_peakness'], 'svg')
-    disp(mean(bootstat))
-    if nData == 1
-        refEphys.peak = bootstat;
-    end
-    if nData == 3
-        performanceMat(2).peak = bootstat;
-    end
-    if nData == 4
-        performanceMat(1).peak = bootstat;
-    end
+    setPrint(8, 3, [PlotDir 'WebsitePlots\' DataSetList(nData).name '_peakness'], 'svg')
 end
 
 close all
