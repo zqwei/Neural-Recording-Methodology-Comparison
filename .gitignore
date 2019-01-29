@@ -30,3 +30,6 @@ S2CParameterExpoloration/
 *.docx
 *.pptx
 *.zip
+rawData/
+s2cData/
+c2sData/
