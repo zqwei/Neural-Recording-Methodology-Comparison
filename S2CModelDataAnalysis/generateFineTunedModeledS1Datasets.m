@@ -10,8 +10,8 @@ load([TempDatDir 'DataListS2CS1Model.mat']);
 % nonlinear function
 g = @(p,x) p(1) + p(2)./ (1 + exp((p(3)-x)*p(4)));
 
-int_noise = [3.0, 2.0];
-ext_noise = [0.15, 0.45];
+int_noise = [3.0];
+ext_noise = [0.45];
 
 for nData = 1:1
     
@@ -35,5 +35,10 @@ for nData = 1:1
     end
     save([TempDatDir DataSetList(1+nData).name '.mat'], 'nDataSet');     
 end
+ 
+unitGroup = getLogPValueTscoreSpikeTime(nDataSet, DataSetList(1).params);       
+sizeGroup = histcounts(unitGroup, 0:3);
+disp(sizeGroup/sum(sizeGroup))
+disp(sum(sizeGroup))
 
 save([TempDatDir 'DataListS2CS1Model.mat'], 'DataSetList');

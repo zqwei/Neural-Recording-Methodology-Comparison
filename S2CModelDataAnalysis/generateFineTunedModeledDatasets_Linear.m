@@ -13,23 +13,27 @@
 
 addpath('../Func');
 setDir;
-load([TempDatDir 'FineTunedNLParams.mat'], 'nlParams');
-load([TempDatDir 'DataListS2CModel.mat']);
+load([TempDatDir 'DataListShuffle.mat'], 'DataSetList');
+load([TempDatDir 'FineTunedNLParams_Linear.mat'], 'nlParams');
+DataSetList_name = {'Modeled_6s_AAV', ...
+                     'Modeled_GP43', ...
+                     'Modeled_GP517', ...
+                     'Modeled_ALM_Long_GP43', ...
+                     'Modeled_ALM_Long_GP517', ...
+                     'Modeled_6s_AAV_S1'};
 
+paramIndex = [1, 1, 1, 7, 7, 11];
 % nonlinear function
-g = @(p,x) p(1) + p(2)./ (1 + exp((p(3)-x)*p(4)));
+g = @(p,x) p(1) + p(2).*x;
 
-int_noise = [2.0, 2.0];
-ext_noise = [0.15, 0.45];
+int_noise = [4.0, 4.0, 4.0, 2.0, 3.0, 3.0];
+ext_noise = [0, 0, 0, 0, 0, 0];
 
-for nData = 1:2
-    
-    DataSetList(2+nData) = DataSetList(nData);
-    DataSetList(2+nData).name = ['FineTuned' DataSetList(nData).name];
-    
-    load([TempDatDir DataSetList(nData).name '.mat'], 'nDataSet');
+for nData = 1:length(DataSetList_name)
+    DataSetListName = ['FineTuned' DataSetList_name{nData} '_S2C_Linear'];
+    load([TempDatDir DataSetList_name{nData} '.mat'], 'nDataSet');
     for nUnit  = 1:length(nDataSet)
-        param  = squeeze(nlParams(2, nUnit, :));
+        param  = squeeze(nlParams(nData, nUnit, :));
         yesNoise = randn(size(nDataSet(nUnit).unit_yes_trial))*ext_noise(nData);
         noNoise  = randn(size(nDataSet(nUnit).unit_no_trial))*ext_noise(nData);
         yesIntNoise = randn(size(nDataSet(nUnit).unit_yes_trial))*int_noise(nData);
@@ -42,7 +46,11 @@ for nData = 1:2
         nDataSet(nUnit).unit_yes_trial = g(param, unit_yes_trial_linear) + yesIntNoise;
         nDataSet(nUnit).unit_no_trial  = g(param, unit_no_trial_linear) + noIntNoise;
     end
-    save([TempDatDir DataSetList(2+nData).name '.mat'], 'nDataSet');     
+    
+    unitGroup = getLogPValueTscoreSpikeTime(nDataSet, DataSetList(7).params);       
+    sizeGroup = histcounts(unitGroup, 0:3);
+    disp(sizeGroup/sum(sizeGroup))
+    disp(sum(sizeGroup))
+    
+    save([TempDatDir DataSetListName '.mat'], 'nDataSet');     
 end
-
-save([TempDatDir 'DataListS2CModel.mat'], 'DataSetList');
