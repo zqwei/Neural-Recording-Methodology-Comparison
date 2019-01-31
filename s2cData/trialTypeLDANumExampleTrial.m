@@ -15,7 +15,7 @@ numTestTrials       = 200;
 numTrainingTrials   = numTrials - numTestTrials;
 ROCThres            = 0.5;
 
-load ([TempDatDir 'DataListShuffle.mat']);
+load ([TempDatDir 'DataListS2CShuffle.mat']);
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 if ~exist([PlotDir '/CollectedUnitsDecodability'],'dir')
     mkdir([PlotDir '/CollectedUnitsDecodability'])
@@ -32,7 +32,7 @@ for nData      = 1:length(DataSetList)
     end
     oldDataSet               = nDataSet;
 
-    for numRandPickUnits      = 1:length(stepSize)        
+    for numRandPickUnits      = 1:length(stepSize)
         selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex(~neuronRemoveList)';% & [DataSetList(nData).cellinfo(:).cellType] == 1;
         selectedNeuronalIndex = selectedHighROCneurons(oldDataSet, DataSetList(nData).params, ROCThres, selectedNeuronalIndex);
         nDataSet              = oldDataSet(selectedNeuronalIndex);
@@ -70,7 +70,7 @@ for nData      = 1:length(DataSetList)
         ylabel('# units');
         set(gca, 'TickDir', 'out')
         setPrint(8, 6, [PlotDir 'WebsitePlots/' DataSetList(nData).name '_decodability'], 'svg')
-    end    
+    end
 end
 
 close all

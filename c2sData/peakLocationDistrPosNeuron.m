@@ -1,12 +1,12 @@
 addpath('../Func');
 setDir;
-load ([TempDatDir 'DataListShuffle.mat']);
+load ([TempDatDir 'DataListC2SShuffle.mat']);
 
 for nData     = 1:length(DataSetList)
     load([TempDatDir DataSetList(nData).name '.mat'])
     params      = DataSetList(nData).params;
     timePoints  = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
-    
+
     numTimeBin          = size(nDataSet(1).unit_yes_trial, 2);
     yesProfileMatrix    = nan(length(nDataSet), numTimeBin);
     noProfileMatrix     = yesProfileMatrix;
@@ -34,7 +34,7 @@ for nData     = 1:length(DataSetList)
     numTime   = length(timeTag);
     polein    = DataSetList(nData).params.polein;
     poleout   = DataSetList(nData).params.poleout;
-    
+
     countMaxId = hist(maxId, 1:numTimeBin*2)/size(actMat,1)*100;
     figure;
     hold on;

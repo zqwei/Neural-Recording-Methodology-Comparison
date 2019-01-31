@@ -4,7 +4,7 @@
 
 addpath('../Func');
 setDir;
-load ([TempDatDir 'DataListShuffle.mat']);
+load ([TempDatDir 'DataListC2SShuffle.mat']);
 
 combinedParams = {{1}, {2}, {[1 2]}};
 margNames      = {'Stim', 'Time', 'Inter'};
@@ -36,12 +36,12 @@ for nData      = 1:length(DataSetList)
         load([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'])
         selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex(~neuronRemoveList)';
     end
-    
+
     oldDataSet          = nDataSet;
     selectedNeuronalIndex = selectedHighROCneurons(oldDataSet, DataSetList(nData).params, ROCThres, selectedNeuronalIndex);
     nDataSet              = oldDataSet(selectedNeuronalIndex);
-    decodability          = zeros(numFold, size(nDataSet(1).unit_yes_trial,2)); 
-    
+    decodability          = zeros(numFold, size(nDataSet(1).unit_yes_trial,2));
+
     evMat              = zeros(numFold, length(combinedParams), numComps);
     firingRates        = generateDPCAData(nDataSet, numTrials);
     firingRatesAverage = nanmean(firingRates, ndims(firingRates));
@@ -68,7 +68,7 @@ for nData      = 1:length(DataSetList)
     set(gca, 'TickDir', 'out')
     legend({'Trial type', 'Time', 'Other'})
     legend('boxoff')
-    setPrint(8, 6, [PlotDir 'WebsitePlots/' DataSetList(nData).name '_pca'], 'svg')   
+    setPrint(8, 6, [PlotDir 'WebsitePlots/' DataSetList(nData).name '_pca'], 'svg')
 end
 
 

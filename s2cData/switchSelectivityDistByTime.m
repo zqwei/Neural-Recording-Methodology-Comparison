@@ -7,7 +7,7 @@
 
 addpath('../Func');
 setDir;
-load ([TempDatDir 'DataListShuffle.mat']);
+load ([TempDatDir 'DataListS2CShuffle.mat']);
 
 cmap = cbrewer('qual', 'Set1', 9, 'cubic');
 cmap = cmap([3, 5, 9], :);
@@ -18,7 +18,7 @@ for nData      = 1:length(DataSetList)
     unitGroup = getLogPValueTscoreSpikeTime(nDataSet, DataSetList(nData).params);
     sizeGroup = histcounts(unitGroup, 0:3);
     figure('Visible', 'off');
-    groupNames      = {['Non' newline 'n = ' num2str(sum(unitGroup==0))], ... 
+    groupNames      = {['Non' newline 'n = ' num2str(sum(unitGroup==0))], ...
                        ['Mono' newline 'n = ' num2str(sum(unitGroup==1))], ...
                        ['Multi' newline 'n = ' num2str(sum(unitGroup==2))]};
     donut(sizeGroup, groupNames, groupColors);
