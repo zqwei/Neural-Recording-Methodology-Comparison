@@ -24,12 +24,9 @@ end
 stepSize            = 50;
 
 for nData      = 1:length(DataSetList)
-    if ~exist([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'], 'file')
-        load([TempDatDir DataSetList(nData).name '.mat'])
-        neuronRemoveList = false(length(nDataSet), 1);
-    else
-        load([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'])
-    end
+
+    load([TempDatDir DataSetList(nData).name '.mat'])
+    neuronRemoveList = false(length(nDataSet), 1);
     oldDataSet               = nDataSet;
 
     for numRandPickUnits      = 1:length(stepSize)

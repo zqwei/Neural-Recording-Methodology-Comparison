@@ -2,7 +2,7 @@ addpath('../Func');
 setDir;
 load ([TempDatDir 'DataListC2SShuffle.mat']);
 
-for nData     = 1:length(DataSetList)
+for nData     = 11%1:length(DataSetList)
     load([TempDatDir DataSetList(nData).name '.mat'])
     params      = DataSetList(nData).params;
     timePoints  = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
@@ -12,8 +12,8 @@ for nData     = 1:length(DataSetList)
     noProfileMatrix     = yesProfileMatrix;
     positivePeak        = false(length(nDataSet));
     for nUnit        = 1:length(nDataSet)
-        yesData      = mean(nDataSet(nUnit).unit_yes_trial);
-        noData       = mean(nDataSet(nUnit).unit_no_trial);
+        yesData      = mean(nDataSet(nUnit).unit_yes_trial, 1);
+        noData       = mean(nDataSet(nUnit).unit_no_trial, 1);
         maxData      = max([yesData, noData]);
         minData      = min([yesData, noData]);
         rData        = (maxData - minData);

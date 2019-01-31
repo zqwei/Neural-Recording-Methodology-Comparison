@@ -27,15 +27,11 @@ cmap = [         0    0.4470    0.7410
 ROCThres            = 0.50;
 
 
-for nData      = 1:length(DataSetList)
-    if ~exist([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'], 'file')
-        load([TempDatDir DataSetList(nData).name '.mat'])
-        neuronRemoveList = false(length(nDataSet), 1);
-        selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
-    else
-        load([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'])
-        selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex(~neuronRemoveList)';
-    end
+for nData      = 11%1:length(DataSetList)
+    
+    load([TempDatDir DataSetList(nData).name '.mat'])
+    neuronRemoveList = false(length(nDataSet), 1);
+    selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
 
     oldDataSet          = nDataSet;
     selectedNeuronalIndex = selectedHighROCneurons(oldDataSet, DataSetList(nData).params, ROCThres, selectedNeuronalIndex);
@@ -57,7 +53,8 @@ for nData      = 1:length(DataSetList)
         PCAmargVar(i,:) = sum((Wpca' * Xmargs{i}).^2, 2)' / totalVar;
     end
     figure;
-    bar(1:numComps, PCAmargVar(:, 1:numComps)','stacked', 'edgecolor', 'none')
+    numComps_ = min(size(PCAmargVar, 2), numComps);
+    bar(1:numComps_, PCAmargVar(:, 1:numComps_)','stacked', 'edgecolor', 'none')
     box off
     xlim([0 numComps+0.5])
     ylim([0 0.62])
