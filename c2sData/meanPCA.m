@@ -27,7 +27,7 @@ cmap = [         0    0.4470    0.7410
 ROCThres            = 0.50;
 
 
-for nData      = 11%1:length(DataSetList)
+for nData      = 1:length(DataSetList)
     
     load([TempDatDir DataSetList(nData).name '.mat'])
     neuronRemoveList = false(length(nDataSet), 1);

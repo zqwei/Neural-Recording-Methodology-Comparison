@@ -2,7 +2,7 @@ addpath('../Func');
 setDir;
 load ([TempDatDir 'DataListC2SShuffle.mat']);
 
-for nData     = 11%1:length(DataSetList)
+for nData     = 1:length(DataSetList)
     load([TempDatDir DataSetList(nData).name '.mat'])
     params      = DataSetList(nData).params;
     timePoints  = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);

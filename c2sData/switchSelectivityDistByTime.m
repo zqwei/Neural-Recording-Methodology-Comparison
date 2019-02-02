@@ -20,7 +20,7 @@ ffactor = [  0     0     1.5
              0     0     1.5
              0     0     1.0]';
 
-for nData      = 11%1:length(DataSetList)
+for nData      = 1:length(DataSetList)
     load([TempDatDir DataSetList(nData).name '.mat']);
     if contains(DataSetList(nData).name, 'Random')
         unitGroup = getLogPValueTscoreSpikeTimeAve(nDataSet, DataSetList(nData).params, ffactor(nData));
