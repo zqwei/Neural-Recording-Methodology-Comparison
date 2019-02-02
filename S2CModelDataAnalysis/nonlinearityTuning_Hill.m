@@ -2,7 +2,7 @@ addpath('../Func');
 setDir;
 
 %%% define nonlinearity
-f = @(p,x) p(1) + p(2)*x.^p(3)/(p(4)+x.^p(3));
+f = @(p,x) p(1) + p(2)*x.^p(3)./(p(4)+x.^p(3));
 
 %%% Datasets to fit
 sourceDataSetName = {'Modeled_6s_AAV', ...
@@ -48,7 +48,6 @@ for nData        = 1:length(sourceDataSetName)
     [maxRhoIpsi, maxIndexIpsi]   = max(rhoMatIpsi, [], 1);
 
     for nUnit = 1:size(s2cFiringRatesMean, 1)
-        disp(nUnit)
         xdata = s2cFiringRates(nUnit, :, 1:numCaTime, :);
         xdata = sort(xdata, 4);
         if maxRho(nUnit)>maxRhoIpsi(nUnit)

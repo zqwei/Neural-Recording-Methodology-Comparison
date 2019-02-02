@@ -24,13 +24,13 @@ DataSetList_name = {'Modeled_6s_AAV', ...
 
 paramIndex = [1, 1, 1, 7, 7, 11];
 % nonlinear function
-g = @(p,x) p(1) + p(2)*x.^p(3)/(p(4)+x.^p(3));
+g = @(p,x) p(1) + p(2)*x.^p(3)./(p(4)+x.^p(3));
 
-int_noise = [4.0, 4.0, 4.0, 2.0, 3.0, 3.0];
-ext_noise = [0, 0, 0, 0, 0, 0];
+int_noise = [1.5, 2.5, 2.0, 1.0, 1.0, 3.0];
+ext_noise = [0.15, 0.45, 0.15, 0.1, 0.45, 0.5];
 
 for nData = 1:length(DataSetList_name)
-    DataSetListName = ['FineTuned' DataSetList_name{nData} '_S2C_Linear'];
+    DataSetListName = ['FineTuned' DataSetList_name{nData} '_S2C_Hill'];
     load([TempDatDir DataSetList_name{nData} '.mat'], 'nDataSet');
     for nUnit  = 1:length(nDataSet)
         param  = squeeze(nlParams(nData, nUnit, :));
