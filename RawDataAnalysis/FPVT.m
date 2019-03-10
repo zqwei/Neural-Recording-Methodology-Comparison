@@ -77,6 +77,8 @@ for nData                     = [1 3 4 10]
     ylabel('Neuron Index')
     box off;
     setPrint(8, 6, [PlotDir 'SingleUnitsFPVT/SingleUnitsZScore_' DataSetList(nData).name], 'pdf')
+    t_ = DataSetList(nData).params.timeSeries;
+    save(['SingleUnitsZScore_' DataSetList(nData).name '.mat'], 'zScores', 't_')
 
 %     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     % dependence analysis
