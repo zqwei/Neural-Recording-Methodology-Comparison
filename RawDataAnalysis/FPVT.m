@@ -17,14 +17,14 @@ if ~exist([PlotDir 'SingleUnitsFPVT'],'dir')
 end
 
 
-for nData                     = 10%[1 3 4 10]
-    if nData   == 1
-        load([TempDatDir DataSetList(nData).name '.mat'])
-        neuronRemoveList = false(length(nDataSet), 1);
-    else
-        load([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'])
-    end
-    depth                     = [nDataSet.depth_in_um];
+for nData                     = [1 3 4 10]
+%     if nData   == 1
+    load([TempDatDir DataSetList(nData).name '.mat'])
+%         neuronRemoveList = false(length(nDataSet), 1);
+%     else
+%         load([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'])
+%     end
+%     depth                     = [nDataSet.depth_in_um];
 %     nDataSet                  = nDataSet(depth<=380);
     numUnits                  = length(nDataSet);
     pValue                    = applyFuncToCompareTrialType(nDataSet, @pValueTTest2);
@@ -76,7 +76,7 @@ for nData                     = 10%[1 3 4 10]
     xlabel('Time (s)')
     ylabel('Neuron Index')
     box off;
-    setPrint(8, 6, [PlotDir 'SingleUnitsFPVT/SingleUnitsZScore_' DataSetList(nData).name])
+    setPrint(8, 6, [PlotDir 'SingleUnitsFPVT/SingleUnitsZScore_' DataSetList(nData).name], 'pdf')
 
 %     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     % dependence analysis
