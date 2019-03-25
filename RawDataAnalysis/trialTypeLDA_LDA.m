@@ -9,21 +9,28 @@ addpath('../Func');
 setDir;
 ROCThres            = 0.50;
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
-numFold             = 30;
+numFold             = 10;
+load ([TempDatDir 'DataListShuffle.mat']);
 
-nDataList      = [1 3 4 13 10 11 12];
+nDataList      = [10 11 12]; %[1 3 4 13 10 11 12];
 
 for mData      = 1:length(nDataList)
     nData      = nDataList(mData);
     if nData == 13
+        nData = 1;
         load([TempDatDir DataSetList(1).name '.mat'])
         depth_list = [nDataSet.depth_in_um];
-        nDataSet = nDataSet(depth_list < 471);
-        nData = 1;
+        selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
+        selectedNeuronalIndex = selectedNeuronalIndex & depth_list < 471;
+        selectedNeuronalIndex = selectedHighROCneurons(nDataSet, DataSetList(nData).params, ROCThres, selectedNeuronalIndex);
+        nDataSet = nDataSet(selectedNeuronalIndex);
         nName  = 'Ephys_6f';
     else
         load([TempDatDir DataSetList(nData).name '.mat'])
         nName  = DataSetList(nData).name;
+        selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
+        selectedNeuronalIndex = selectedHighROCneurons(nDataSet, DataSetList(nData).params, ROCThres, selectedNeuronalIndex);
+        nDataSet = nDataSet(selectedNeuronalIndex);
     end
     
     params                = DataSetList(nData).params;
@@ -64,6 +71,9 @@ for mData      = 1:length(nDataList)
     nData      = nDataList(mData);
     load([TempDatDir DataSetList(nData).name '.mat'])
     nName  = DataSetList(nData).name;
+    selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
+    selectedNeuronalIndex = selectedHighROCneurons(nDataSet, DataSetList(nData).params, ROCThres, selectedNeuronalIndex);
+    nDataSet = nDataSet(selectedNeuronalIndex);
     
     params                = DataSetList(nData).params;
     numT                  = length(params.timeSeries);
@@ -94,3 +104,5 @@ for mData      = 1:length(nDataList)
     set(gca, 'TickDir', 'out')
     setPrint(8, 6, ['SimilarityLDALDA_' nName], 'pdf')
 end
+
+close all

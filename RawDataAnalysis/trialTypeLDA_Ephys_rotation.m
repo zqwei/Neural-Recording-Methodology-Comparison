@@ -9,16 +9,18 @@ addpath('../Func');
 setDir;
 ROCThres            = 0.50;
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
-
+load ([TempDatDir 'DataListShuffle.mat']);
 
 nData  = 1;
 load([TempDatDir DataSetList(nData).name '.mat'])
 params                = DataSetList(nData).params;
+selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
+selectedNeuronalIndex = selectedHighROCneurons(nDataSet, DataSetList(nData).params, ROCThres, selectedNeuronalIndex);
+nDataSet              = nDataSet(selectedNeuronalIndex);
 numRandPickUnits      = length(nDataSet);
 numTrials             = numRandPickUnits*3;
 totTargets            = [true(numTrials,1); false(numTrials,1)];
 nSessionData          = shuffleSessionData(nDataSet, totTargets, numTrials*2);
-nSessionData          = normalizationDim(nSessionData, 2);
 coeffs                = coeffLDA(nSessionData, totTargets);
 corrMat               = coeffs'*coeffs;
 figure;
