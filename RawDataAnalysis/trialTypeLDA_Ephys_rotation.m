@@ -11,7 +11,7 @@ ROCThres            = 0.50;
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 load ([TempDatDir 'DataListShuffle.mat']);
 
-nData  = 3;
+nData  = 1;
 load([TempDatDir DataSetList(nData).name '.mat'])
 params                = DataSetList(nData).params;
 selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';

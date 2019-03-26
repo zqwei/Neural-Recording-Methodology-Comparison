@@ -9,7 +9,7 @@ addpath('../Func');
 setDir;
 ROCThres            = 0.50;
 cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
-numFold             = 10;
+numFold             = 4;
 load ([TempDatDir 'DataListShuffle.mat']);
 
 nDataList      = [1 3 4 13 10 11 12];
@@ -35,7 +35,7 @@ for mData      = 1:length(nDataList)
     
     params                = DataSetList(nData).params;
     numT                  = length(params.timeSeries);
-    numTrials             = 500;
+    numTrials             = length(nDataSet);
     totTargets            = [true(numTrials,1); false(numTrials,1)];
     corrMat               = zeros(numFold, numT, numT);
 
