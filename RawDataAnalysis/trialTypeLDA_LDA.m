@@ -12,7 +12,7 @@ cmap                = cbrewer('div', 'Spectral', 128, 'cubic');
 numFold             = 10;
 load ([TempDatDir 'DataListShuffle.mat']);
 
-nDataList      = [10 11 12]; %[1 3 4 13 10 11 12];
+nDataList      = [1 3 4 13 10 11 12];
 
 for mData      = 1:length(nDataList)
     nData      = nDataList(mData);
@@ -35,12 +35,12 @@ for mData      = 1:length(nDataList)
     
     params                = DataSetList(nData).params;
     numT                  = length(params.timeSeries);
-    numRandPickUnits      = length(nDataSet);
-    numTrials             = numRandPickUnits*3;
+    numTrials             = 500;
     totTargets            = [true(numTrials,1); false(numTrials,1)];
     corrMat               = zeros(numFold, numT, numT);
 
     for nFold             = 1:numFold
+        disp(nFold)
         nSessionData          = shuffleSessionData(nDataSet, totTargets, numTrials*2);
         nSessionData          = normalizationDim(nSessionData, 2);
         coeffs                = coeffLDA(nSessionData, totTargets);
