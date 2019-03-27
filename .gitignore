@@ -31,6 +31,9 @@ S2CParameterExpoloration/
 *.pptx
 *.zip
 *.tar.gz
+*.jpg
+*.txt
+Backups
 
 rawData/
 s2cData/
