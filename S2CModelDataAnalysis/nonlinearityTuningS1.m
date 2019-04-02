@@ -1,5 +1,6 @@
 addpath('../Func');
 setDir;
+TempDatDir = '../Backups/TempDat_2019_01_28/';
 
 numTrials        = 50;
 load([TempDatDir 'Modeled_6s_AAV_S1.mat']);
@@ -27,7 +28,7 @@ rhoMatIpsi             = corr(caFiringRatesIpsiMean', s2cFiringRatesMean', 'type
 [maxRhoIpsi, maxIndexIpsi]   = max(rhoMatIpsi, [], 1);
 
 nlParams = nan(size(s2cFiringRatesMean, 1), 4);
-
+f = @(p,x) p(1) + p(2)./ (1 + exp((p(3)-x)*p(4)));
 for nUnit = 1:size(s2cFiringRatesMean, 1)
     xdata = s2cFiringRates(nUnit, :, 1:numCaTime, :);
     xdata = sort(xdata, 4);

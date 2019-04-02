@@ -7,9 +7,11 @@
 
 addpath('../Func');
 setDir;
+TempDatDir = '../Backups/TempDat_2019_01_28/';
 
 numFold             = 30;
-load ([TempDatDir 'DataListS2CModel.mat']);
+% load ([TempDatDir 'DataListS2CModel.mat']);
+load([TempDatDir 'DataListS2CS1Model.mat'], 'DataSetList');
 addNoise         = [1 0 0 0];
 
 cmap = [         0    0.4470    0.7410
@@ -28,16 +30,13 @@ ROCThres            = 0.5;
 
 figure;
 
-for nData             = [1 3 4]    
+for nData             = 2%[1 3 4]    
     if nData == 1
         load([TempDatDir 'Shuffle_Spikes.mat'])
         selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
-%         selectedNeuronalIndex = true(length(nDataSet), 1);
     else
         load([TempDatDir DataSetList(nData).name '.mat'])
         selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
-%         selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex(~neuronRemoveList)';
-%         selectedNeuronalIndex = true(length(nDataSet), 1);
     end
     oldDataSet          = nDataSet;
     hold on
@@ -63,8 +62,8 @@ for nData             = [1 3 4]
     end
     
     meandecodability = mean(decodability,1);
-    meanValue        = mean(meandecodability(1:8));
-    meandecodability = (meandecodability - meanValue)/(1-meanValue)*0.5+0.5;
+%     meanValue        = mean(meandecodability(1:8));
+%     meandecodability = (meandecodability - meanValue)/(1-meanValue)*0.5+0.5;
     
     shadedErrorBar(DataSetList(nData).params.timeSeries, meandecodability,...
         std(decodability, 1)/sqrt(numFold),...

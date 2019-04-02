@@ -4,14 +4,15 @@
 
 addpath('../Func');
 setDir;
-load([TempDatDir 'FineTunedNLParams.mat'], 'nlParams');
+TempDatDir = '../Backups/TempDat_2019_01_28/';
+load([TempDatDir 'FineTunedNLParamsS1.mat'], 'nlParams');
 load([TempDatDir 'DataListS2CS1Model.mat']);
 
 % nonlinear function
 g = @(p,x) p(1) + p(2)./ (1 + exp((p(3)-x)*p(4)));
 
-int_noise = [3.0];
-ext_noise = [0.45];
+int_noise = [0.6];
+ext_noise = [0.15];
 
 for nData = 1:1
     
@@ -20,7 +21,7 @@ for nData = 1:1
     
     load([TempDatDir DataSetList(nData).name '.mat'], 'nDataSet');
     for nUnit  = 1:length(nDataSet)
-        param  = squeeze(nlParams(2, nUnit, :));
+        param  = nlParams(nUnit, :);
         yesNoise = randn(size(nDataSet(nUnit).unit_yes_trial))*ext_noise(nData);
         noNoise  = randn(size(nDataSet(nUnit).unit_no_trial))*ext_noise(nData);
         yesIntNoise = randn(size(nDataSet(nUnit).unit_yes_trial))*int_noise(nData);

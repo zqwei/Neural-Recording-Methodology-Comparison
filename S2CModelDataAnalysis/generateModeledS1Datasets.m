@@ -12,13 +12,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 addpath('../Func');
 setDir;
+TempDatDir = '../Backups/TempDat_2019_01_28/';
 load([TempDatDir 'nlParaMat.mat'],'nlParaMat');
 clear params;
 load([TempDatDir 'DataListShuffle.mat'], 'DataSetList');
 load([TempDatDir 'Shuffle_Spikes_Nuo_S1_Short_Delay.mat'], 'nDataSet');
-params      = DataSetList(1).params;
+params      = DataSetList(11).params;
+nDataSet    = repmat(nDataSet, 40, 1);
 spikeDataSet           = nDataSet;
-ActiveNeuronIndex = DataSetList(1).ActiveNeuronIndex;
+ActiveNeuronIndex = repmat(DataSetList(11).ActiveNeuronIndex, 40, 1);
 clear DataSetList
 
 % Modeled 6s-AAV
