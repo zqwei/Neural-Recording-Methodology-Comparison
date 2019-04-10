@@ -56,7 +56,7 @@ disp(['Ephys performance at last period of ' num2str(last_period) ' sec is ' num
 
 % S2C model
 ca_linear   = zeros(numTrial*2, numNeuron, numT);
-params = [1.7, 0.06, 1.0]; % decay, rise, internal noise
+params = [1.7, 0.06, 3.0]; % decay, rise, internal noise
 
 
 for nNeuron = 1:numNeuron
