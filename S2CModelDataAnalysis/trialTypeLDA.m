@@ -30,7 +30,7 @@ ROCThres            = 0.5;
 
 figure;
 
-for nData             = 2%[1 3 4]    
+for nData             = 2%[1 3 4]
     if nData == 1
         load([TempDatDir 'Shuffle_Spikes.mat'])
         selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
@@ -42,7 +42,7 @@ for nData             = 2%[1 3 4]
     hold on
     selectedNeuronalIndex = selectedHighROCneurons(oldDataSet, DataSetList(nData).params, ROCThres, selectedNeuronalIndex);
     nDataSet              = oldDataSet(selectedNeuronalIndex);
-    decodability          = zeros(numFold, size(nDataSet(1).unit_yes_trial,2));        
+    decodability          = zeros(numFold, size(nDataSet(1).unit_yes_trial,2));
     for nFold    = 1:numFold
         trainingTargets     = [true(numTrainingTrials/2,1); false(numTrainingTrials/2,1)];
         trainingTargets     = trainingTargets(randperm(numTrainingTrials));
@@ -60,14 +60,17 @@ for nData             = 2%[1 3 4]
         nSessionData        = shuffleSessionData(nDataSet(randPickUnits), totTargets, numTestTrials);
         decodability(nFold,:) = decodabilityLDA(nSessionData +randn(size(nSessionData))*1e-3/sqrt(numTrials)* addNoise(nData), trainingTargets, testTargets);
     end
-    
+
     meandecodability = mean(decodability,1);
 %     meanValue        = mean(meandecodability(1:8));
 %     meandecodability = (meandecodability - meanValue)/(1-meanValue)*0.5+0.5;
-    
-    shadedErrorBar(DataSetList(nData).params.timeSeries, meandecodability,...
-        std(decodability, 1)/sqrt(numFold),...
-        {'-', 'linewid', 1.0, 'color', cmap(nData,:)}, 0.5);  
+
+%     shadedErrorBar(DataSetList(nData).params.timeSeries, meandecodability,...
+%         std(decodability, 1)/sqrt(numFold),...
+%         {'-', 'linewid', 1.0, 'color', cmap(nData,:)}, 0.5);
+    plot(DataSetList(nData).params.timeSeries, meandecodability, 'k');
+    plot(DataSetList(nData).params.timeSeries, meandecodability+std(decodability, 1)/sqrt(numFold), 'k');
+    plot(DataSetList(nData).params.timeSeries, meandecodability-std(decodability, 1)/sqrt(numFold), 'k');  
     xlim([min(DataSetList(nData).params.timeSeries) max(DataSetList(nData).params.timeSeries)]);
     ylim([0.5 1])
     gridxy ([DataSetList(nData).params.polein, 0],[], 'Color','k','Linestyle','--','linewid', 0.5)
@@ -78,7 +81,7 @@ for nData             = 2%[1 3 4]
     ylabel('Decodability');
 end
 
-setPrint(8, 6, [PlotDir 'S2CModel/CollectedUnitsDecodabilityROC_Summary'])
+setPrint(8, 6, [PlotDir 'S2CModel/CollectedUnitsDecodabilityROC_Summary'], 'pdf')
 margNames = {'Spike', '', 'S2C long decay', 'S2C short decay'};
 
 figure;
