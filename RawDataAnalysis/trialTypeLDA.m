@@ -31,7 +31,7 @@ numTestTrials       = numRandPickUnits*2;
 numTrainingTrials   = numTrials - numTestTrials;
 ROCThres            = 0.50;
 
-for nData             = [1] %[1 3 4 10]
+for nData             = [4] %[1 3 4 10]
     if nData == 11 || nData == 1
         load([TempDatDir DataSetList(nData).name '.mat'])
         selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
@@ -66,7 +66,7 @@ for nData             = [1] %[1 3 4 10]
         randPickUnits       = randPickUnits(1:end);%numRandPickUnits
 
         nSessionData        = shuffleSessionData(nDataSet(randPickUnits), totTargets, numTestTrials);
-        nSessionData        = smoothdata(nSessionData, 3, 'movmean', 15);
+%         nSessionData        = smoothdata(nSessionData, 3, 'movmean', 15);
 %         decodability(nFold,:) = decodabilitySLDA(nSessionData, trainingTargets, testTargets);
         decodability(nFold,:) = decodabilityLDA(nSessionData, trainingTargets, testTargets); % +randn(size(nSessionData))*1e-3/sqrt(numTrials)* addNoise(nData)
     end
@@ -103,3 +103,30 @@ end
 % setPrint(3, 2, [PlotDir 'CollectedUnitsDecodability/CollectedUnitsDecodabilityROC_SummaryLabel'])
 %
 % close all;
+
+
+%%%%
+%%%% small snippets for figure
+%
+%s
+% decodability_ephys = decodability;
+% decodability_ca = decodability;
+% 
+% decodability = decodability_ephys(:, 1:end-7) - decodability_ca(:, 8:end);
+% meandecodability = mean(decodability,1);
+% 
+% figure,
+% hold on
+% plot(DataSetList(nData).params.timeSeries(8:end), meandecodability, 'k');
+% plot(DataSetList(nData).params.timeSeries(8:end), meandecodability+std(decodability, 1)/sqrt(numFold), 'k');
+% plot(DataSetList(nData).params.timeSeries(8:end), meandecodability-std(decodability, 1)/sqrt(numFold), 'k');
+% xlim([min(DataSetList(nData).params.timeSeries) max(DataSetList(nData).params.timeSeries)]);
+% % ylim([0.5 1])
+% gridxy ([DataSetList(nData).params.polein, 0],[], 'Color','k','Linestyle','--','linewid', 0.5)
+% set(gca, 'TickDir', 'out')
+% box off;
+% hold off;
+% xlabel('Time (s)');
+% ylabel('Decodability');
+% 
+% setPrint(8, 6, [PlotDir 'CollectedUnitsDecodability/CollectedUnitsDecodability_difference_2'], 'pdf')
