@@ -1,5 +1,6 @@
 addpath('../Func');
 setDir;
+TempDatDir = '../Backups/TempDat_2019_01_28/';
 load('refMat.mat')
 load([TempDatDir 'DataListShuffle.mat'], 'DataSetList');
 params        = DataSetList(3).params;

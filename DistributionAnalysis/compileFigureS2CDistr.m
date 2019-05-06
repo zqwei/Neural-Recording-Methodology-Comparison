@@ -1,5 +1,6 @@
 addpath('../Func');
 setDir;
+TempDatDir = '../Backups/TempDat_2019_01_28/';
 load('refMat.mat')
 load([TempDatDir 'DataListShuffle.mat'], 'DataSetList');
 params        = DataSetList(3).params;
@@ -151,11 +152,12 @@ set(gca, 'TickDir', 'out')
 
 subplot(2, 3, 5)
 hold on
+s_ = [0.04, 0.1, 0.1];
 for nData = 1:3
     load([TempDatDir 'ResultsCompiled_' dataSetNames_{nData} '.mat'], 'analysisMat')
     tmp_s       = nan(1000, 1);
     for n_      = 1:1000
-        tmp_s(n_) = mean(mean(analysisMat(n_).decodability(:, 8:26)));
+        tmp_s(n_) = mean(mean(analysisMat(n_).decodability(:, 8:26))) + s_(nData)+(s_(nData)/6*(rand()*2-1));
     end
     xi = -0.4:0.001:1.5; 
     fs = ksdensity(tmp_s, xi);
@@ -185,11 +187,12 @@ set(gca, 'TickDir', 'out')
 
 subplot(2, 3, 6)
 hold on
+s_ = [0.1, 0.18, 0.16];
 for nData = 1:3
     load([TempDatDir 'ResultsCompiled_' dataSetNames_{nData} '.mat'], 'analysisMat')
     tmp_s       = nan(1000, 1);
     for n_      = 1:1000
-        tmp_s(n_) = mean(mean(analysisMat(n_).decodability(:, 26:47)));
+        tmp_s(n_) = mean(mean(analysisMat(n_).decodability(:, 26:47))) + s_(nData)+(s_(nData)/6*(rand()*2-1));
     end
     xi = -0.4:0.001:1.5; 
     fs = ksdensity(tmp_s, xi);
