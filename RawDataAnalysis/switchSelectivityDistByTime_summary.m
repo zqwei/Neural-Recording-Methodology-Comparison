@@ -1,3 +1,6 @@
+addpath('../Func');
+setDir;
+
 frac_ = [0.1097    0.5847    0.3056; 
          0.2934    0.6557    0.0509; 
          0.4592    0.4980    0.0427;
@@ -155,3 +158,49 @@ for nPlot = 1:3
     set(gca, 'YTick', 0:0.1:ylim_(nPlot))
 end
 setPrint(4*3, 3, 'cell_type_alm', 'pdf')
+
+
+frac_ = [542    749    202; 
+         1225    955    113; 
+         1611    849    212];
+sum_size = [1493; 2293; 2672];
+frac_ = bsxfun(@rdivide, frac_, sum_size);
+ylim_    = [0.7, 0.7, 0.35];
+
+figure
+for nPlot = 1:3
+    subplot(1, 3, nPlot)
+    hold on
+    bar(1:3, frac_(:, nPlot), 'FaceColor', [0.5 0.5 0.5], 'EdgeColor', 'none');
+    errorbar(1:3, frac_(:, nPlot), ...
+        sqrt(frac_(:, nPlot).*(1-frac_(:, nPlot))./sum_size), 'k')
+    set(gca, 'TickDir', 'out')
+    xlim([0.5, 3.5])
+    ylim([0 ylim_(nPlot)])
+    set(gca, 'XTick', 1:3)
+    set(gca, 'YTick', 0:0.1:ylim_(nPlot))
+end
+setPrint(4*3, 3, 'cell_type_mcmc', 'pdf')
+
+
+frac_ = [1008    375    20; 
+         1586    645    62; 
+         2390    265    17];
+sum_size = [1493; 2293; 2672];
+frac_ = bsxfun(@rdivide, frac_, sum_size);
+ylim_    = [0.7, 0.7, 0.35];
+
+figure
+for nPlot = 1:3
+    subplot(1, 3, nPlot)
+    hold on
+    bar(1:3, frac_(:, nPlot), 'FaceColor', [0.5 0.5 0.5], 'EdgeColor', 'none');
+    errorbar(1:3, frac_(:, nPlot), ...
+        sqrt(frac_(:, nPlot).*(1-frac_(:, nPlot))./sum_size), 'k')
+    set(gca, 'TickDir', 'out')
+    xlim([0.5, 3.5])
+    ylim([0 ylim_(nPlot)])
+    set(gca, 'XTick', 1:3)
+    set(gca, 'YTick', 0:0.1:ylim_(nPlot))
+end
+setPrint(4*3, 3, 'cell_type_mlspike', 'pdf')
