@@ -5,6 +5,7 @@
 addpath('../Func');
 setDir;
 file_ext = {'Decode_Sample', 'Decode_Delay'};
+x_labels = {'Sample-epoch decodability', 'Delay-epoch decodability'};
 xi = 0.5:0.01:1.0; 
 color_ = [0.7176    0.2745    1.0000];
 
@@ -55,16 +56,19 @@ for nlist = 1:3
             decodability(nFold,:) = decodabilityLDA(nSessionData, trainingTargets, testTargets);
         end
         for nPC = 1:2
-            figure;
+            figure('visible', 'off');
             tmp_s = mean(decodability(:, timePoints(nPC+1):timePoints(nPC+2)), 2);
             fs = ksdensity(tmp_s, xi);
             f_ = max(fs);
             plot(xi, fs/f_, '-', 'color', color_, 'linewid', 2);
             xlim([0.5, 1])
             ylim([0, 1])
-            set(gca,'XTick',[0.5, 1], 'YTick', [], 'TickDir', 'out','Ycolor','none')
+            set(gca,'XTick',[0.5, 1], 'YTick', [0, 1], 'TickDir', 'out')
+            ylabel('Prob. density')
+            xlabel(x_labels{nPC})
+            set(gca,'fontsize', 14)
             box off
-            setPrint(8,3,[Result_ DataSetList(nData).name '_' file_ext{nPC}], 'svg')
+            setPrint(8,4.5,[Result_ DataSetList(nData).name '_' file_ext{nPC}], 'svg')
             close all;
         end
     end

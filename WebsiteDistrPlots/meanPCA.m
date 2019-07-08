@@ -45,12 +45,15 @@ for nlist = 1:3
             evMat(nFold, :, :) = PCAmargVar(:, 1:numComps);
         end
         for nPC = 1:3
-            figure;
+            figure('visible', 'off');
             tmp_s = evMat(:, 2, nPC)./sum(evMat(:, :, nPC), 2);
             fs = ksdensity(tmp_s, xi);
             f_ = max(fs);
             plot(xi, fs/f_, '-', 'color', color_, 'linewid', 2);
-            set(gca,'XTick',[0, 1], 'YTick', [], 'TickDir', 'out','Ycolor','none')
+            set(gca,'XTick',[0, 1], 'YTick', [0, 1], 'TickDir', 'out')
+            ylabel('Prob. density')
+            xlabel(['Frac. time content (PC' num2str(nPC) ')'])
+            set(gca,'fontsize', 14)
             box off
             setPrint(8,3,[Result_ DataSetList(nData).name '_PC' num2str(nPC)], 'svg')
             close all;

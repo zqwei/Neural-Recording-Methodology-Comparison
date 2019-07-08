@@ -5,6 +5,7 @@ xi = 0:0.001:0.5;
 color_ = [     0    0.4470    0.7410];
 fileList = {'DataListShuffle', 'DataListC2SShuffle', 'DataListS2CShuffle'};
 Result_ = '../../../Documents/DatasetComparison/public/results/nonDataDistr/';
+x_labels = {'Peakiness (KL)'};
 
 for nlist = 1:3
     load ([TempDatDir fileList{nlist} '.mat']);
@@ -49,16 +50,19 @@ for nlist = 1:3
             kl(nNeuron)= 1/length(countMaxId)*sum(log(countMaxId*length(countMaxId)));
         end
         for n_ = 1:1
-            figure
+            figure('visible', 'off');
             tmp_s = -kl(:, n_);
             fs = ksdensity(tmp_s, xi);
             f_ = max(fs);
             plot(xi, fs/f_, '-', 'color', color_, 'linewid', 2);
-            set(gca,'XTick',[xi(1), xi(end)], 'YTick', [], 'TickDir', 'out','Ycolor','none')
+            set(gca,'XTick',[xi(1), xi(end)], 'YTick', [0, 1], 'TickDir', 'out')
+            ylabel('Prob. density')
+            xlabel(x_labels{n_})
+            set(gca,'fontsize', 14)
             xlim([0, 0.5])
             ylim([0, 1])
             box off
-            setPrint(8,3,[Result_ DataSetList(nData).name '_' file_ext{n_}], 'svg')
+            setPrint(8,4.5,[Result_ DataSetList(nData).name '_' file_ext{n_}], 'svg')
             close all;
         end
     end

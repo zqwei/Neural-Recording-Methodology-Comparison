@@ -5,6 +5,7 @@ xi = 0.0:0.01:2.0;
 color_ = [     0    0.4470    0.7410];
 fileList = {'DataListShuffle', 'DataListC2SShuffle', 'DataListS2CShuffle'};
 Result_ = '../../../Documents/DatasetComparison/public/results/nonDataDistr/';
+x_labels = {'Peakiness (std)'};
 
 for nlist = 1:3
     load ([TempDatDir fileList{nlist} '.mat']);
@@ -50,9 +51,12 @@ for nlist = 1:3
             fs = ksdensity(tmp_s, xi);
             f_ = max(fs);
             plot(xi, fs/f_, '-', 'color', color_, 'linewid', 2);
-            set(gca,'XTick',[0, 2], 'YTick', [], 'TickDir', 'out','Ycolor','none')
+            set(gca,'XTick',[0, 2], 'YTick', [0, 1], 'TickDir', 'out')
+            ylabel('Prob. density')
+            xlabel(x_labels{n_})
             box off
-            setPrint(8,3,[Result_ DataSetList(nData).name '_' file_ext{n_}], 'svg')
+            set(gca,'fontsize', 14)
+            setPrint(8,4.5,[Result_ DataSetList(nData).name '_' file_ext{n_}], 'svg')
             close all;
         end
     end
