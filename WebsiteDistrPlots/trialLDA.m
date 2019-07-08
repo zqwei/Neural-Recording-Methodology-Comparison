@@ -4,72 +4,68 @@
 
 addpath('../Func');
 setDir;
-load ([TempDatDir 'DataListShuffle.mat']);
-% load ([TempDatDir 'DataListC2SShuffle.mat']);
-% load ([TempDatDir 'DataListS2CShuffle.mat']);
-file_ext = {'Peakiness'};
-xi = 0.0:0.1:2.0; 
-color_ = [0.4313    0.4313    0.4313];
+file_ext = {'Decode_Sample', 'Decode_Delay'};
+xi = 0.5:0.01:1.0; 
+color_ = [0.7176    0.2745    1.0000];
 
-combinedParams = {{1}, {2}, {[1 2]}};
-margNames      = {'Stim', 'Time', 'Inter'};
 numTrials      = 100;
+numRandPickUnits = 50;
+numTrainingTrials = 300;
+numTestTrials     = 300;
 numFold        = 100;
+ROCThres       = 0.50;
 
-numComps       = 10;
-cmap = [         0    0.4470    0.7410
-    0.8500    0.3250    0.0980
-    0.9290    0.6940    0.1250
-    0.4940    0.1840    0.5560
-    0.4660    0.6740    0.1880
-    0.3010    0.7450    0.9330
-    0.6350    0.0780    0.1840];
+fileList = {'DataListShuffle', 'DataListC2SShuffle', 'DataListS2CShuffle'};
+Result_ = '../../../Documents/DatasetComparison/public/results/nonDataDistr/';
 
-ROCThres            = 0.50;
+for nlist = 1:3
+    load ([TempDatDir fileList{nlist} '.mat']);
 
-
-for nData      = [1 3 4]
-    if ~exist([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'], 'file')
+    for nData      = 1:length(DataSetList)
+        disp(DataSetList(nData).name);
         load([TempDatDir DataSetList(nData).name '.mat'])
-        neuronRemoveList = false(length(nDataSet), 1);
         selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex';
-    else
-        load([TempDatDir DataSetList(nData).name '_withOLRemoval.mat'])
-        selectedNeuronalIndex = DataSetList(nData).ActiveNeuronIndex(~neuronRemoveList)';
-    end
-    
-    oldDataSet          = nDataSet;
-    selectedNeuronalIndex = selectedHighROCneurons(oldDataSet, DataSetList(nData).params, ROCThres, selectedNeuronalIndex);
-    nDataSet              = oldDataSet(selectedNeuronalIndex);
-    decodability          = zeros(numFold, size(nDataSet(1).unit_yes_trial,2)); 
-    
-    evMat              = zeros(numFold, length(combinedParams), numComps);
-    for nFold          = 1:numFold
-        firingRates        = generateDPCAData(nDataSet, numTrials);
-        firingRatesAverage = nanmean(firingRates, ndims(firingRates));
-        pcaX               = firingRatesAverage(:,:);
-        firingRatesAverage = bsxfun(@minus, firingRatesAverage, mean(pcaX,2));
-        pcaX               = bsxfun(@minus, pcaX, mean(pcaX,2));
-        Xmargs             = dpca_marginalize(firingRatesAverage, 'combinedParams', combinedParams, 'ifFlat', 'yes');
-        totalVar           = sum(sum(pcaX.^2));
-        [~, S, Wpca] = svd(pcaX');
-
-        PCAmargVar         = zeros(length(combinedParams), length(nDataSet));
-        for i=1:length(Xmargs)
-            PCAmargVar(i,:) = sum((Wpca' * Xmargs{i}).^2, 2)' / totalVar;
+        decodability = zeros(numFold, size(nDataSet(nData).unit_yes_trial,2));
+        params      = DataSetList(nData).params;
+        timePoints  = timePointTrialPeriod(params.polein, params.poleout, params.timeSeries);
+        valid_cell = true(length(nDataSet), 1);
+        for nNeuron = 1:length(nDataSet)
+            if any(isnan(nDataSet(nNeuron).unit_yes_trial), 'all') || any(isnan(nDataSet(nNeuron).unit_no_trial), 'all')
+                valid_cell(nNeuron) = false;
+            end
         end
-        evMat(nFold, :, :) = PCAmargVar(:, 1:numComps);
-    end
-    if nData == 1
-        refEphys.pca = evMat;
-        disp(mean(evMat(:, :, 1)))
-    end
-    if nData == 3
-        performanceMat(2).pca = evMat;
-        disp(mean(evMat(:, :, 1)))
-    end
-    if nData == 4
-        performanceMat(1).pca = evMat;
-        disp(mean(evMat(:, :, 1)))
+        nDataSet = nDataSet(valid_cell);
+        for nFold    = 1:numFold
+            trainingTargets     = [true(numTrainingTrials/2,1); false(numTrainingTrials/2,1)];
+            trainingTargets     = trainingTargets(randperm(numTrainingTrials));
+            testTargets         = [true(numTestTrials/2,1); false(numTestTrials/2,1)];
+            testTargets         = testTargets(randperm(numTestTrials));
+            totTargets          = [testTargets; trainingTargets];
+            trainingDecisions   = trainingTargets(randperm(numTrainingTrials));
+            testDecisions       = testTargets(randperm(numTestTrials));
+            totDecisions        = [testDecisions; trainingDecisions];
+            randPickUnits       = randperm(length(nDataSet));
+            if numRandPickUnits < length(nDataSet)
+                randPickUnits   = randPickUnits(1:numRandPickUnits);
+            end
+            if length(nDataSet) < 10
+                continue;
+            end
+            nSessionData        = shuffleSessionData(nDataSet(randPickUnits), totTargets, numTestTrials);
+            decodability(nFold,:) = decodabilityLDA(nSessionData, trainingTargets, testTargets);
+        end
+        for nPC = 1:2
+            figure;
+            tmp_s = mean(decodability(:, timePoints(nPC+1):timePoints(nPC+2)), 2);
+            fs = ksdensity(tmp_s, xi);
+            f_ = max(fs);
+            plot(xi, fs/f_, '-', 'color', color_, 'linewid', 2);
+            xlim([0.5, 1])
+            ylim([0, 1])
+            set(gca,'XTick',[0.5, 1], 'YTick', [], 'TickDir', 'out','Ycolor','none')
+            box off
+            setPrint(8,3,[Result_ DataSetList(nData).name '_' file_ext{nPC}], 'svg')
+            close all;
+        end
     end
 end
