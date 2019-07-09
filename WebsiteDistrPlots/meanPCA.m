@@ -55,7 +55,7 @@ for nlist = 1:3
             xlabel(['Frac. time content (PC' num2str(nPC) ')'])
             set(gca,'fontsize', 14)
             box off
-            setPrint(8,3,[Result_ DataSetList(nData).name '_PC' num2str(nPC)], 'svg')
+            setPrint(8,4.5,[Result_ DataSetList(nData).name '_PC' num2str(nPC)], 'svg')
             close all;
         end
     end
