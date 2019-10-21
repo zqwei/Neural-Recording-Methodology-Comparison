@@ -4,6 +4,7 @@
 
 addpath('../Func');
 setDir;
+TempDatDir = '../Backups/TempDat_2019_01_28/';
 load ([TempDatDir 'DataListShuffle.mat']);
 
 combinedParams = {{1}, {2}, {[1 2]}};
@@ -45,12 +46,14 @@ for nData      = [1 10]
     nDataSet              = oldDataSet(selectedNeuronalIndex);
     decodability          = zeros(numFold, 3); 
     
-    evMat              = zeros(numFold, length(combinedParams), numComps);
+%     evMat              = zeros(numFold, length(combinedParams), numComps);
     firingRates        = generateDPCAData(nDataSet, numTrials);
     firingRatesAverage = nanmean(firingRates, ndims(firingRates));
     pcaX               = firingRatesAverage(:,:);
     firingRatesAverage = bsxfun(@minus, firingRatesAverage, mean(pcaX,2));
+%     firingRatesAverage = bsxfun(@rdivide, firingRatesAverage, std(pcaX,[],2));
     pcaX               = bsxfun(@minus, pcaX, mean(pcaX,2));
+%     pcaX               = bsxfun(@rdivide, pcaX, std(pcaX,[],2));
     Xmargs             = dpca_marginalize(firingRatesAverage, 'combinedParams', combinedParams, 'ifFlat', 'yes');
     totalVar           = sum(sum(pcaX.^2));
     [~, S, Wpca] = svd(pcaX');
@@ -59,7 +62,7 @@ for nData      = [1 10]
     for i=1:length(Xmargs)
         PCAmargVar(i,:) = sum((Wpca' * Xmargs{i}).^2, 2)' / totalVar;
     end
-    evMat(nFold, :, :) = PCAmargVar(:, 1:numComps);
+%     evMat(nFold, :, :) = PCAmargVar(:, 1:numComps);
     sum(sum(PCAmargVar, 1)>0.01)
 
     figure;
@@ -75,7 +78,7 @@ for nData      = [1 10]
     setPrint(8, 6, [PlotDir 'CollectedUnitsPCA/CollectedUnitsPCA_' DataSetList(nData).name])  
     legend({'Trial type', 'Time', 'Other'})
     legend('boxoff')
-    setPrint(8, 6, [PlotDir 'CollectedUnitsPCA/' DataSetList(nData).name '_pca'], 'svg')   
+%     setPrint(8, 6, [PlotDir 'CollectedUnitsPCA/' DataSetList(nData).name '_pca'], 'svg')   
 end
 
 

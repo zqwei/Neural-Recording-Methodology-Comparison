@@ -5,6 +5,7 @@
 
 addpath('../Func');
 setDir;
+TempDatDir = '../Backups/TempDat_2019_01_28/';
 load([TempDatDir 'DataListEphys.mat'], 'DataSetList');
 smoothedparams = DataSetList(5).params;
 load ([TempDatDir 'DataListShuffle.mat']);
@@ -23,7 +24,7 @@ smoothDataSet = nDataSet;
 
 load([TempDatDir DataSetList(nData).name '_old.mat'])
 depth = [nDataSet.depth_in_um];
-validDepth = depth<800 & depth>100;
+validDepth = depth<400 & depth>100;
 
 % selective defined as neuron shows selectivity for any of sample, delay,
 % response epoch.
@@ -93,4 +94,4 @@ actNo = mean(noActMat(~contraIndex& otherIndex,435:550), 2);
 [~, p] = ttest2(actPre, actYes, 'tail', 'right');
 [~, p] = ttest(actPre, actNo, 'tail', 'left');
 
-setPrint(8*2, 6, [PlotDir 'SingleUnitsContraIpsi\' DataSetList(nData).name])
+% setPrint(8*2, 6, [PlotDir 'SingleUnitsContraIpsi\' DataSetList(nData).name])
