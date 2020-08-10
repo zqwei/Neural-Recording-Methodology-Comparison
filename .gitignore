@@ -1,6 +1,8 @@
 # ignore .mat files, anywhere in the tree
 Depreciated*
 _
+Backups/
+*.ipynb_checkpoints*
 TempDat/
 Texts/
 KSLab_Files/
