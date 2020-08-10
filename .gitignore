@@ -36,6 +36,6 @@ S2CParameterExpoloration/
 *.txt
 Backups
 
-rawData/
-s2cData/
-c2sData/
+# rawData/
+# s2cData/
+# c2sData/
