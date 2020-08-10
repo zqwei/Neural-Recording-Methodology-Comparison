@@ -27,7 +27,7 @@ function [CaImaging, Ca]    = spikeTimeToImagingSigmoid(spikeTimes, timeSeriesDa
     tau_rise    = params(5);
     intNoise    = params(6);
     Ca                        = zeros(length(spikeTimes), length(timeSeriesData));  
-    nPreSamplePoints          = 100;
+    nPreSamplePoints          = 1000;
     preSamplePoints           = exprnd(1/rMean, length(spikeTimes), nPreSamplePoints);
     preSamplePoints           = cumsum(preSamplePoints, 2);
     
