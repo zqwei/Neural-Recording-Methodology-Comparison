@@ -12,7 +12,7 @@ figure;
 hold on
 nIndex = 0;
 
-for nData = [1 4 3]
+for nData = [1 4 3 10]
     if nData == 1
         load([TempDatDir DataSetList(nData).name '.mat'])
         neuronRemoveList = false(length(nDataSet), 1);
