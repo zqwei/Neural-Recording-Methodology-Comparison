@@ -1,7 +1,7 @@
 # ignore .mat files, anywhere in the tree
 Depreciated*
-
-*.ipynb_checkpoints*
+_
+*ipynb_checkpoints*
 TempDat/
 Texts/
 KSLab_Files/
@@ -31,11 +31,4 @@ S2CParameterExpoloration/
 *.docx
 *.pptx
 *.zip
-*.tar.gz
-*.jpg
-*.txt
 Backups
-
-# rawData/
-# s2cData/
-# c2sData/
