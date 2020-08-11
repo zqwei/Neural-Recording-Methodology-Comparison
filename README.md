@@ -1,4 +1,6 @@
 # Neural Recording Methodology Comparison
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3979786.svg)](https://doi.org/10.5281/zenodo.3979786)
+
 
 ## Dataset list
 Beside the existing datasets from Svoboda Lab (see description for details), the 6f-TG imaging data were recorded by Kayvon Daie and their rois were mannually selected by Ziqiang Wei. 
