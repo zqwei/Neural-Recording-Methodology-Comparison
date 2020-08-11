@@ -1,6 +1,17 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Raw activity of all neurons
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Peakiness
+% 
+% Figure 7, Wei et al., 2020
+%
+% 
+%
+% author: Ziqiang Wei
+% email: weiz@janelia.hhmi.org
+%
+% 
+
+
+
 addpath('../Func');
 setDir;
 load ([TempDatDir 'DataListC2SShuffle.mat']);

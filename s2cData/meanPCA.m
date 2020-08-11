@@ -1,6 +1,15 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% dPCA and PCA across trials
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% PCA and its content
+% 
+% Figure 5, Wei et al., 2020
+%
+% 
+%
+% author: Ziqiang Wei
+% email: weiz@janelia.hhmi.org
+%
+% 
+
 
 addpath('../Func');
 setDir;

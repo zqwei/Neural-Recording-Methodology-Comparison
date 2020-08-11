@@ -1,9 +1,18 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Cell type categorization
 % homogenous cell        : no change of selectivity
 % heterogenous cell      : change of selectivity
 % no-selective cell      : no selectivity
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% Figure 2, Wei et al., 2020
+%
+% 
+%
+% author: Ziqiang Wei
+% email: weiz@janelia.hhmi.org
+%
+% 
+% 
 
 addpath('../Func');
 setDir;

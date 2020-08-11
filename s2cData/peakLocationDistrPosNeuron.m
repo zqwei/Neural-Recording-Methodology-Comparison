@@ -1,3 +1,15 @@
+%
+% Peakiness distribution
+% 
+% Figure 7, Wei et al., 2020
+%
+% 
+%
+% author: Ziqiang Wei
+% email: weiz@janelia.hhmi.org
+%
+% 
+
 addpath('../Func');
 setDir;
 load ([TempDatDir 'DataListS2CShuffle.mat']);
