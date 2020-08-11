@@ -1,24 +1,10 @@
 # Neural Recording Methodology Comparison
 
 ## Dataset list
+Beside the existing datasets from Svoboda Lab (see description for details), the 6f-TG imaging data were recorded by Kayvon Daie and their rois were mannually selected by Ziqiang Wei. 
 
-### Simultaneous ephys and imaging
-* GCaMP6s/f - AAV
-* GCaMP6s/f - Transgenic
-
-### Short delay
-* Spiking neurons (99 sessions; from Li et al. Nature, 2015)
-* GCaMP6s Ca++ imaging __AAV__
-* GCaMP6s Ca++ imaging __Transgenic GP4.3__
-* GCaMP6f Ca++ imaging (1 session) __Transgenic GP5.17__
-* GCaMP6f Ca++ imaging (22 sessions) __Transgenic GP5.17__
-* Spiking neurons
-* Whole-cell intracellular recording
-
-### Long delay
-* Spiking neurons
-* GCaMP6f Ca++ imaging (3 sessions) __Transgenic GP5.17__
-* GCaMP6s Ca++ imaging (3 sessions) __Transgenic GP4.3__
+### Dataset description and resources
+A description of the data can be found at http://im-phys.org/data and documented breifly in file https://ndownloader.figshare.com/files/24190289 
 
 ### Preprocessing
 * removing the units with low number of trials (*< 20*) in either trial type condition
@@ -26,6 +12,11 @@
 * spiking dataset -- maximum intersection after SD prepocessing
 * Ca++ imaging dataset -- removing low ROC units
 
+### Precompiled data
+A precompiled version of full datasets can be downloaded from https://ndownloader.figshare.com/articles/12786296/versions/1 , which can be used directly in the codes. In order to make the code functionally, please copy the data to folder `TempDat` in the root folder of the project.
+
+### Raw data
+The existing data can be found from CRCNS.org, while we release the new 6f-TG raw data at .....
 
 ## Models
 ### Spike to image models
@@ -41,33 +32,37 @@
 * C2S Constrained OOPSI MCMC
 * C2S Peel Linear
 
-## Analyses
+## Analyses in Wei et al., 2020
 ### Single neuron analyses
-* dynamical selectivity
+* dynamical selectivity (Figure 2A-I)
     * non-selective
     * monophaisc selective
     * multiphasic selective
-* Selectivity conservation
+    * code is named as `switchSelectivityDistByTime.m`
+* Selectivity conservation (Figure 2J, 4C-E)
     * ramp-up dynamics
     * ramp-down dynamics
-* Peakiness
+    * code could be sent upon request (raw functions for the plots can be found in `Func`, but not compiled in api)
+* Peakiness (Figure 7)
     * peak activity
+    * code is named as `rawActivityPositivePeak.m` (Figure 7 raster plots)
+    * code is named as `peakLocationDistrPosNeuron.m` (Figure 7 statistical plots; histogram)
 
 ### Population analyses
-* PCA contents
+* PCA contents (Figure 5)
     * trial type
     * time
     * other
-* Coding directions
+    * code is named as `meanPCA.m`
+* Coding directions (Figure 6)
     * LDA -- trial type
     * LDA -- behavioral epochs
+    * code for trial type is named as `trialTypeLDANumExampleTrial.m`
+    * code for behavioral epochs could be sent upon request (raw functions for the plots can be found in `Func`, but not compiled in api)
 
-### Model analyses (in Folder *MiscModelAnalysis*)
-#### Ephys subsample
-#### Ephys mixed units
-#### Peakiness model
+## Analyses beyond Wei et al., 2020
+All analyses listed here can be sent out upon request.
 
-## Future analyses
 ### Single neuron analyses
 * Activity distribution across trial periods (pre-sample, sample, delay, response)
 * Dynamics of neuronal modulation
@@ -101,4 +96,5 @@ for temporary dynamics or choice selection (code from *C.K. Machens*)
 ### Website
 http://im-phys.org/
 
-## Questions, comments, issues
+### Contact
+weiz (at) janelia (dot) hhmi (dot) org
