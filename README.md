@@ -17,8 +17,12 @@ A description of the data can be found at http://im-phys.org/data and documented
 ### Precompiled data
 A precompiled version of full datasets can be downloaded from https://ndownloader.figshare.com/articles/12786296/versions/1 , which can be used directly in the codes. In order to make the code functionally, please copy the data to folder `TempDat` in the root folder of the project.
 
+Citation: Wei, Ziqiang; Lin, Bei-Jung; Chen, Tsai-Wen; Daie, Kayvon; Svoboda, Karel; Druckmann, Shaul (2020): Precompiled data for "A comparison of neuronal population dynamics measured with calcium imaging and electrophysiology". figshare. Dataset. https://doi.org/10.6084/m9.figshare.12786296.v1
+
 ### Raw data
-The existing data can be found from CRCNS.org, while we release the new 6f-TG raw data at .....
+The existing data can be found from CRCNS.org, while we release the new 6f-TG raw data at https://doi.org/10.6084/m9.figshare.12792587
+
+Citation: Wei, Ziqiang; Lin, Bei-Jung; Chen, Tsai-Wen; Daie, Kayvon; Svoboda, Karel; Druckmann, Shaul (2020): Raw data for "A comparison of neuronal population dynamics measured with calcium imaging and electrophysiology". figshare. Dataset. https://doi.org/10.6084/m9.figshare.12792587
 
 ## Models
 ### Spike to image models
